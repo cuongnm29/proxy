@@ -46,6 +46,28 @@
                     </ul>
                 </li>
             @endcan
+            @can('services_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->is('admin/services') || request()->is('admin/services/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.service.title') }}
+                    </a>
+                    
+                </li>
+            @endcan
+            @can('server_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->is('admin/server') || request()->is('admin/server/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.server.title') }}
+                    </a>
+                    
+                </li>
+            @endcan
             <li class="nav-item">
                 <a href="{{ route('auth.change_password') }}" class="nav-link">
                     <i class="nav-icon fas fa-fw fa-key">
