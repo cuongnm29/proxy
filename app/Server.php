@@ -14,7 +14,7 @@ class Server extends Model
     ];
 
     protected $fillable = [
-                            'serviceId', 
+                            'serviceid', 
                             'name', 
                             'time',
                             'status',

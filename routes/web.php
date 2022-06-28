@@ -18,4 +18,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     //services
     Route::resource('services', 'Admin\ServicesController');
     Route::delete('services_mass_destroy', 'Admin\ServicesController@massDestroy')->name('services.mass_destroy');
+     //server
+     Route::resource('server', 'Admin\ServerController');
+     Route::delete('server_mass_destroy', 'Admin\ServerController@massDestroy')->name('server.mass_destroy');
 });

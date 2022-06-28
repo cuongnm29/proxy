@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+
+use App\Server;
+use App\Services;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MassDestroyServerRequest;
+use App\Http\Requests\Admin\StoreServerRequest;
+use App\Http\Requests\Admin\UpdateServerRequest;
+use Gate;
 use Illuminate\Http\Request;
 
 class ServerController extends Controller
@@ -14,7 +21,8 @@ class ServerController extends Controller
      */
     public function index()
     {
-        //
+        $servers = Server::get();  
+        return view('admin.server.index', compact('servers'));
     }
 
     /**
@@ -24,7 +32,11 @@ class ServerController extends Controller
      */
     public function create()
     {
-        //
+        if (! Gate::allows('server_manage')) {
+            return abort(401);
+        }
+        $services = Services::tree();
+        return view('admin.server.create',compact('services'));
     }
 
     /**
@@ -33,21 +45,13 @@ class ServerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreServerRequest $request)
     {
-        //
+        Server::create($request->all());
+        return redirect()->route('admin.server.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
@@ -55,9 +59,13 @@ class ServerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Server $server)
     {
-        //
+        if (! Gate::allows('server_manage')) {
+            return abort(401);
+        }
+        $services = Services::tree();
+        return view('admin.server.edit', compact( 'server','services'));
     }
 
     /**
@@ -67,9 +75,11 @@ class ServerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateServerRequest $request, Server $server)
     {
-        //
+        $server->update($request->all());
+
+        return redirect()->route('admin.server.index');
     }
 
     /**
@@ -78,8 +88,27 @@ class ServerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Server $server)
     {
-        //
+        if (! Gate::allows('server_manage')) {
+            return abort(401);
+        }
+
+        $server->delete();
+        return back();
+    }
+    /**
+     * Delete all selected Services at once.
+     *
+     * @param Request $request
+     */
+    public function massDestroy(Request $request)
+    {
+        if (! Gate::allows('server_manage')) {
+            return abort(401);
+        }
+        Server::whereIn('id', request('ids'))->delete();
+
+        return response()->noContent();
     }
 }
