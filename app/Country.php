@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Server;
 class Country extends Model
 {
     protected $table = 'Country';
@@ -14,9 +14,12 @@ class Country extends Model
     ];
     
     protected $fillable = [
-                           'serverId',
+                           'serverid',
                            'name',
                            'code',
                            'status'
                             ]; 
+    public  function server() {
+        return $this->belongsTo(Server::class, 'serverid');
+    }
 }

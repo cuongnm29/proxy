@@ -20,4 +20,7 @@ class Server extends Model
                             'status',
                             'isorder'
                             ]; 
+    public static function tree() {
+        return static::get(); // or based on you question 0?
+        }
 }

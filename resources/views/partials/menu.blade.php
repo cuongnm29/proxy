@@ -68,6 +68,17 @@
                     
                 </li>
             @endcan
+            @can('country_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.country.index') }}" class="nav-link {{ request()->is('admin/county') || request()->is('admin/country/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.country.title') }}
+                    </a>
+                    
+                </li>
+            @endcan
             <li class="nav-item">
                 <a href="{{ route('auth.change_password') }}" class="nav-link">
                     <i class="nav-icon fas fa-fw fa-key">

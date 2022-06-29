@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Country;
+use App\Server;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreCountryRequest;
+use App\Http\Requests\Admin\UpdateCountryRequest;
+use Gate;
 use Illuminate\Http\Request;
 
 class CountryController extends Controller
@@ -14,7 +19,8 @@ class CountryController extends Controller
      */
     public function index()
     {
-        //
+        $countries = Country::get();  
+        return view('admin.country.index', compact('countries'));
     }
 
     /**
@@ -24,7 +30,12 @@ class CountryController extends Controller
      */
     public function create()
     {
-        //
+        
+        if (! Gate::allows('country_manage')) {
+            return abort(401);
+        }
+        $servers = Server::get()->pluck('name', 'name');
+        return view('admin.country.create',compact('servers'));
     }
 
     /**
@@ -33,31 +44,30 @@ class CountryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCountryRequest $request)
     {
-        //
+        $input = $request->all();
+        $serverid = $input['serverid'];
+        $input['serverid'] = implode(',', $serverid);
+        Country::create($input);
+        
+        return redirect()->route('admin.country.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Country $country)
     {
-        //
+        if (! Gate::allows('country_manage')) {
+            return abort(401);
+        }
+        $servers = Server::get()->pluck('name', 'name');
+        return view('admin.country.edit', compact( 'country','servers'));
     }
 
     /**
@@ -67,9 +77,14 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCountryRequest $request, Country $country)
     {
-        //
+        $input = $request->all();
+        $serverid = $input['serverid'];
+        $input['serverid'] = implode(',', $serverid);
+        
+        $country->update($input);
+        return redirect()->route('admin.country.index');
     }
 
     /**
@@ -78,8 +93,27 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Country $country)
     {
-        //
+        if (! Gate::allows('country_manage')) {
+            return abort(401);
+        }
+
+        $country->delete();
+        return back();
+    }
+     /**
+     * Delete all selected Services at once.
+     *
+     * @param Request $request
+     */
+    public function massDestroy(Request $request)
+    {
+        if (! Gate::allows('country_manage')) {
+            return abort(401);
+        }
+        Country::whereIn('id', request('ids'))->delete();
+
+        return response()->noContent();
     }
 }

@@ -21,4 +21,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
      //server
      Route::resource('server', 'Admin\ServerController');
      Route::delete('server_mass_destroy', 'Admin\ServerController@massDestroy')->name('server.mass_destroy');
+      //country
+      Route::resource('country', 'Admin\CountryController');
+      Route::delete('country_mass_destroy', 'Admin\CountryController@massDestroy')->name('country.mass_destroy');
 });
