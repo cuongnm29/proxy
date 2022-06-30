@@ -15,8 +15,8 @@
                     <span class="btn btn-info btn-xs select-all">{{ trans('global.select_all') }}</span>
                     <span class="btn btn-info btn-xs deselect-all">{{ trans('global.deselect_all') }}</span></label>
                 <select name="serverid[]" id="serverid" class="form-control select2" multiple="multiple" required>
-                    @foreach($servers as $id => $servers)
-                        <option value="{{ $id }}">{{ $id }}</option>
+                    @foreach($server as $id => $server)
+                    <option value="{{ $id }}" {{ (in_array($id, old('server', [])) || isset($country) && $country->servers()->pluck('id')->contains($id)) ? 'selected' : '' }}>{{ $server }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('serverid'))
@@ -37,11 +37,11 @@
                     </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.server.fields.name_helper') }}
+                    {{ trans('cruds.country.fields.name_helper') }}
                 </p>
             </div>
             <div class="form-group {{ $errors->has('code') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.server.fields.code') }}*</label>
+                <label for="name">{{ trans('cruds.country.fields.code') }}*</label>
                 <input type="text" id="code" name="code" class="form-control" value="{{ old('code', isset($country) ? $country->code : '') }}" required>
                 @if($errors->has('code'))
                     <em class="invalid-feedback">

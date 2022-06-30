@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Country;
 use App\Server;
+use App\CountriesHasServer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCountryRequest;
 use App\Http\Requests\Admin\UpdateCountryRequest;
@@ -34,8 +35,8 @@ class CountryController extends Controller
         if (! Gate::allows('country_manage')) {
             return abort(401);
         }
-        $servers = Server::get()->pluck('name', 'name');
-        return view('admin.country.create',compact('servers'));
+        $server = Server::get()->pluck('name', 'id');
+        return view('admin.country.create',compact('server'));
     }
 
     /**
@@ -47,11 +48,15 @@ class CountryController extends Controller
     public function store(StoreCountryRequest $request)
     {
         $input = $request->all();
-        $serverid = $input['serverid'];
-        $input['serverid'] = implode(',', $serverid);
-        Country::create($input);
-        
-        return redirect()->route('admin.country.index');
+        $servers = $input['serverid'];
+       $countries=  Country::create($request->all());
+       $input['countries_id']=$countries->max('id');
+       foreach($servers as $server)
+       {
+        $input['server_id'] = $server;
+        CountriesHasServer::create($input);
+       }
+      return redirect()->route('admin.country.index');
     }
 
     
@@ -66,8 +71,8 @@ class CountryController extends Controller
         if (! Gate::allows('country_manage')) {
             return abort(401);
         }
-        $servers = Server::get()->pluck('name', 'name');
-        return view('admin.country.edit', compact( 'country','servers'));
+        $server = Server::get()->pluck('name', 'id');
+        return view('admin.country.edit', compact( 'country','server'));
     }
 
     /**
@@ -80,10 +85,16 @@ class CountryController extends Controller
     public function update(UpdateCountryRequest $request, Country $country)
     {
         $input = $request->all();
-        $serverid = $input['serverid'];
-        $input['serverid'] = implode(',', $serverid);
-        
-        $country->update($input);
+        $servers = $input['serverid'];
+        $country->update($request->all());
+        CountriesHasServer::where('countries_id', $country->id)->delete();
+        $input['countries_id']=$country->id;
+        foreach($servers as $server)
+        {
+            $input['server_id'] = $server;
+            CountriesHasServer::create($input);
+        }
+        $country->update($request->all());
         return redirect()->route('admin.country.index');
     }
 
@@ -100,6 +111,7 @@ class CountryController extends Controller
         }
 
         $country->delete();
+        CountriesHasServer::where('countries_id', $country->id)->delete();
         return back();
     }
      /**
@@ -113,7 +125,7 @@ class CountryController extends Controller
             return abort(401);
         }
         Country::whereIn('id', request('ids'))->delete();
-
+        CountriesHasServer::where('countries_id', request('ids'))->delete();
         return response()->noContent();
     }
 }

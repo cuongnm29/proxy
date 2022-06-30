@@ -14,8 +14,8 @@
                     <span class="btn btn-info btn-xs select-all">{{ trans('global.select_all') }}</span>
                     <span class="btn btn-info btn-xs deselect-all">{{ trans('global.deselect_all') }}</span></label>
                 <select name="serverid[]" id="serverid" class="form-control select2" multiple="multiple" required>
-                    @foreach($servers as $id => $servers)
-                        <option value="{{ $id }}">{{ $id }}</option>
+                    @foreach($server as $id => $server)
+                    <option value="{{ $id }}" {{ (in_array($id, old('server', [])) || isset($country) && $country->server->contains($id)) ? 'selected' : '' }}>{{ $server }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('serverid'))

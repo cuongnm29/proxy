@@ -26,7 +26,7 @@
                             {{ trans('cruds.country.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.country.fields.code') }}
+                            {{ trans('cruds.country.fields.name') }}
                         </th>
                         <th>
                             {{ trans('cruds.country.fields.server') }}
@@ -52,7 +52,9 @@
                                 {{ $country->name ?? '' }}
                             </td>
                             <td>
-                                {{ $country->isorder ?? '' }}
+                            @foreach($country->servers()->pluck('name') as $server)
+                                    <span class="badge badge-info">{{ $server }}</span>
+                                @endforeach
                             </td>
                             <td>
                                 {{ $country->status == "1" ? 'Enable':'Disable' }}

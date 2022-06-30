@@ -14,12 +14,15 @@ class Country extends Model
     ];
     
     protected $fillable = [
-                           'serverid',
                            'name',
+                           'isorder',
                            'code',
                            'status'
                             ]; 
-    public  function server() {
-        return $this->belongsTo(Server::class, 'serverid');
+    public  function servers() {
+        return $this->belongsToMany(Server::class,
+                                    CountriesHasServer::class,
+                                    'countries_id',
+                                    'server_id');
     }
 }
