@@ -21,5 +21,8 @@ class Services extends Model
                             'isorder',
                             'status'
                             ]; 
+   public static function tree() {
+       return static::get(); // or based on you question 0?
+     }
 }
   

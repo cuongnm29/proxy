@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Coupon;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreCouponRequest;
+use App\Http\Requests\Admin\UpdateCouponRequest;
+use Gate;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Str;
 class CouponController extends Controller
 {
     /**
@@ -14,7 +18,8 @@ class CouponController extends Controller
      */
     public function index()
     {
-        //
+        $coupons = Coupon::get();  
+        return view('admin.coupon.index', compact('coupons'));
     }
 
     /**
@@ -24,7 +29,10 @@ class CouponController extends Controller
      */
     public function create()
     {
-        //
+        if (! Gate::allows('coupon_manage')) {
+            return abort(401);
+        }
+        return view('admin.coupon.create');
     }
 
     /**
@@ -33,21 +41,16 @@ class CouponController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCouponRequest $request)
     {
-        //
+        $input = $request->all();
+        $input['name']= Str::random(4)+ $input['percent'] ;
+        Coupon::create($request->all());
+      
+      return redirect()->route('admin.Coupon.index'); 
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -55,9 +58,13 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Coupon $coupon)
     {
-        //
+        if (! Gate::allows('coupon_manage')) {
+            return abort(401);
+        }
+      
+        return view('admin.coupon.edit', compact( 'coupon'));
     }
 
     /**
@@ -67,9 +74,10 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCouponRequest $request, Coupon $coupon)
     {
-        //
+        $coupon->update($request->all());
+        return redirect()->route('admin.coupon.index');
     }
 
     /**
@@ -78,8 +86,28 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Coupon $coupon)
     {
-        //
+        if (! Gate::allows('coupon_manage')) {
+            return abort(401);
+        }
+
+        $coupon->delete();
+
+        return back();
+    }
+      /**
+     * Delete all selected Services at once.
+     *
+     * @param Request $request
+     */
+    public function massDestroy(Request $request)
+    {
+        if (! Gate::allows('coupon_manage')) {
+            return abort(401);
+        }
+        Coupon::whereIn('id', request('ids'))->delete();
+
+        return response()->noContent();
     }
 }

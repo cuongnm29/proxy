@@ -59,11 +59,22 @@
             @endcan
             @can('server_manage')
                 <li class="nav-item nav-dropdown">
-                    <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->is('admin/server') || request()->is('admin/server/*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.server.index') }}" class="nav-link {{ request()->is('admin/server') || request()->is('admin/server/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-users nav-icon">
 
                         </i>
                         {{ trans('cruds.server.title') }}
+                    </a>
+                    
+                </li>
+            @endcan
+            @can('country_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.country.index') }}" class="nav-link {{ request()->is('admin/county') || request()->is('admin/country/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.country.title') }}
                     </a>
                     
                 </li>

@@ -18,4 +18,13 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     //services
     Route::resource('services', 'Admin\ServicesController');
     Route::delete('services_mass_destroy', 'Admin\ServicesController@massDestroy')->name('services.mass_destroy');
+    //server
+    Route::resource('server', 'Admin\ServerController');
+    Route::delete('server_mass_destroy', 'Admin\ServerController@massDestroy')->name('server.mass_destroy');
+    //country
+    Route::resource('country', 'Admin\CountryController');
+    Route::delete('country_mass_destroy', 'Admin\CountryController@massDestroy')->name('country.mass_destroy');
+    //coupon
+    Route::resource('coupon', 'Admin\CouponController');
+    Route::delete('coupon_mass_destroy', 'Admin\CouponController@massDestroy')->name('coupon.mass_destroy');
 });
