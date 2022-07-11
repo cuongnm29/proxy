@@ -79,6 +79,28 @@
                     
                 </li>
             @endcan
+            @can('coupon_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.coupon.index') }}" class="nav-link {{ request()->is('admin/coupon') || request()->is('admin/coupon/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.coupon.title') }}
+                    </a>
+                    
+                </li>
+            @endcan
+            @can('ip_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.ipaddress.index') }}" class="nav-link {{ request()->is('admin/ipaddress') || request()->is('admin/ipaddress/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.ipaddress.title') }}
+                    </a>
+                    
+                </li>
+            @endcan
             <li class="nav-item">
                 <a href="{{ route('auth.change_password') }}" class="nav-link">
                     <i class="nav-icon fas fa-fw fa-key">

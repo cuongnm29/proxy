@@ -44,10 +44,10 @@ class CouponController extends Controller
     public function store(StoreCouponRequest $request)
     {
         $input = $request->all();
-        $input['name']= Str::random(4)+ $input['percent'] ;
-        Coupon::create($request->all());
+        $input['name']= Str::random(6) ;
+        Coupon::create($input);
       
-      return redirect()->route('admin.Coupon.index'); 
+      return redirect()->route('admin.coupon.index'); 
 
     }
 
