@@ -3,15 +3,15 @@
 @can('coupon_manage')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route("admin.coupon.create") }}">
-                {{ trans('global.add') }} {{ trans('cruds.coupon.title_singular') }}
+            <a class="btn btn-success" href="{{ route("admin.ipaddress.create") }}">
+                {{ trans('global.add') }} {{ trans('cruds.ipaddress.title_singular') }}
             </a>
         </div>
     </div>
 @endcan
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.coupon.title_singular') }} {{ trans('global.list') }}
+        {{ trans('cruds.ipaddress.title_singular') }} {{ trans('global.list') }}
     </div>
 
     <div class="card-body">
@@ -23,16 +23,19 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.coupon.fields.id') }}
+                            {{ trans('cruds.ipaddress.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.coupon.fields.name') }}
+                            {{ trans('cruds.ipaddress.fields.ip') }}
                         </th>
                         <th>
-                            {{ trans('cruds.coupon.fields.percent') }}
+                            {{ trans('cruds.ipaddress.fields.country') }}
                         </th>
                         <th>
-                            {{ trans('cruds.coupon.fields.status') }}
+                            {{ trans('cruds.ipaddress.fields.server') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ipaddress.fields.status') }}
                         </th>
                         <th>
                             &nbsp;
@@ -40,19 +43,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($coupons as $key => $coupon)
-                        <tr data-entry-id="{{ $coupon->id }}">
+                    @foreach($ipaddress as $key => $ip)
+                        <tr data-entry-id="{{ $ip->id }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $coupon->id ?? '' }}
+                                {{ $ip->id ?? '' }}
                             </td>
                             <td>
-                                {{ $coupon->name ?? '' }}
+                                {{ $ip->ipName ?? '' }}
                             </td>
                             <td>
-                                {{ $coupon->percent ?? '' }}
+                                {{ $ip->countryName ?? '' }}
+                            </td>
+                            <td>
+                                {{ $ip->serverName ?? '' }}
                             </td>
                             <td>
                                 {{ $coupon->status == "1" ? 'Enable':'Disable' }}

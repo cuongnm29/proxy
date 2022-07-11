@@ -14,10 +14,10 @@ class IpAddess extends Model
     ];
 
     protected $fillable = [
-                            'countryId', 
                             'ipName', 
                             'timeExpired',
                             'timeRemain',
                             'status'
                             ]; 
+                            
 }

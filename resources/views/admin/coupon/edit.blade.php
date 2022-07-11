@@ -9,9 +9,10 @@
     <div class="card-body">
         <form action="{{ route('admin.coupon.update', [$coupon->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="form-group {{ $errors->has('percent') ? 'has-error' : '' }}">
                 <label for="name">{{ trans('cruds.coupon.fields.percent') }}*</label>
-                <input type="number" id="percent" name="percent" class="form-control" value="{{ old('percent', isset($coupon) ? $coupon->percent : '') }}" required>
+                <input type="number" id="percent" name="percent" class="form-control" min="1" max= "100" value="{{ old('percent', isset($coupon) ? $coupon->percent : '') }}" required>
                 @if($errors->has('percent'))
                     <em class="invalid-feedback">
                         {{ $errors->first('percent') }}

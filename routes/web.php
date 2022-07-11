@@ -27,4 +27,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     //coupon
     Route::resource('coupon', 'Admin\CouponController');
     Route::delete('coupon_mass_destroy', 'Admin\CouponController@massDestroy')->name('coupon.mass_destroy');
+    //ipaddress
+    Route::resource('ipaddress', 'Admin\IpAddressController');
+    Route::delete('ipaddress_mass_destroy', 'Admin\IpAddressController@massDestroy')->name('ipaddress.mass_destroy');
 });
