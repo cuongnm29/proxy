@@ -46,6 +46,17 @@
                     </ul>
                 </li>
             @endcan
+            @can('category_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.category.index') }}" class="nav-link {{ request()->is('admin/category') || request()->is('admin/category/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.category.title') }}
+                    </a>
+                    
+                </li>
+            @endcan
             @can('services_manage')
                 <li class="nav-item nav-dropdown">
                     <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->is('admin/services') || request()->is('admin/services/*') ? 'active' : '' }}">

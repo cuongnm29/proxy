@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Category; 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\Admin\StoreCategoryRequest;
+use App\Http\Requests\Admin\UpdateCategoryRequest;
+use Gate;
+use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
     /**
@@ -14,7 +17,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        if (! Gate::allows('category_manage')) {
+            return abort(401);
+        }
+        $allCategories = Category::tree(); 
+        return view('admin.category.index', compact('allCategories'));
     }
 
     /**
@@ -24,7 +31,11 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        if (! Gate::allows('category_manage')) {
+            return abort(401);
+        }
+        $categories = Category::tree();
+        return view('admin.category.create', compact('categories'));
     }
 
     /**
@@ -33,21 +44,17 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //
+        if (! Gate::allows('category_manage')) {
+            return abort(401);
+        }
+        $request['slug']=Str::slug($request->name, '-');
+        Category::create($request->all());
+        return redirect()->route('admin.category.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -55,9 +62,13 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category )
     {
-        //
+        if (! Gate::allows('category_manage')) {
+            return abort(401);
+        }
+        $categories = Category::tree();
+        return view('admin.category.edit', compact( 'category','categories'));
     }
 
     /**
@@ -67,9 +78,15 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        if (! Gate::allows('category_manage')) {
+            return abort(401);
+        }
+        $request['slug']=Str::slug($request->name, '-');
+        $category->update($request->all());
+
+        return redirect()->route('admin.category.index');
     }
 
     /**
@@ -78,8 +95,17 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return back();
+    }
+    public function massDestroy(Request $request)
+    {
+        if (! Gate::allows('category_manage')) {
+            return abort(401);
+        }
+        Category::whereIn('id', request('ids'))->delete();
+        return response()->noContent();
     }
 }
