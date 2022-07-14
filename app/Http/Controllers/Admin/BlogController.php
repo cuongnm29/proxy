@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Category; 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Admin\StoreCategoryRequest;
-use App\Http\Requests\Admin\UpdateCategoryRequest;
-use Gate;
-use Illuminate\Support\Str;
-class CategoryController extends Controller
+use App\Blog;
+use App\Category;
+class BlogController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +15,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('category_manage')) {
+        if (! Gate::allows('blog_manage')) {
             return abort(401);
         }
-        $allCategories = Category::tree(); 
-        return view('admin.category.index', compact('allCategories'));
+        $blogs = Blog::get();  
+        return view('admin.blog.index', compact('blogs'));
     }
 
     /**
@@ -31,11 +29,11 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        if (! Gate::allows('category_manage')) {
+        if (! Gate::allows('blog_manage')) {
             return abort(401);
         }
-        $categories = Category::tree();
-        return view('admin.category.create', compact('categories'));
+        $categories = Category::treeNews();
+        return view('admin.blog.create', compact('categories'));
     }
 
     /**
@@ -44,31 +42,30 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreBlogRequest  $request)
     {
-        if (! Gate::allows('category_manage')) {
+        if (! Gate::allows('blog_manage')) {
             return abort(401);
         }
-        $request['slug']=Str::slug($request->name, '-');
-        Category::create($request->all());
-        return redirect()->route('admin.category.index');
+        $request['slug']=Str::slug($request->title, '-');
+        Blog::create($request->all());
+        return redirect()->route('admin.blog.index');
     }
 
     
-
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category )
+    public function edit(Blog $blog)
     {
-        if (! Gate::allows('category_manage')) {
+        if (! Gate::allows('blog_manage')) {
             return abort(401);
         }
-        $categories = Category::tree();
-        return view('admin.category.edit', compact( 'category','categories'));
+        $categories = Category::treeNews();
+        return view('admin.blog.edit', compact( 'blog','categories'));
     }
 
     /**
@@ -78,15 +75,15 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateBlogRequest $request, Blog $blog)
     {
-        if (! Gate::allows('category_manage')) {
+        if (! Gate::allows('blog_manage')) {
             return abort(401);
         }
-        $request['slug']=Str::slug($request->name, '-');
-        $category->update($request->all());
+        $request['slug']=Str::slug($request->title, '-');
+        $blog->update($request->all());
 
-        return redirect()->route('admin.category.index');
+        return redirect()->route('admin.blog.index');
     }
 
     /**
@@ -95,17 +92,20 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Blog $blog)
     {
-        $category->delete();
+        if (! Gate::allows('blog_manage')) {
+            return abort(401);
+        }
+        $blog->delete();
         return back();
     }
     public function massDestroy(Request $request)
     {
-        if (! Gate::allows('category_manage')) {
+        if (! Gate::allows('blog_manage')) {
             return abort(401);
         }
-        Category::whereIn('id', request('ids'))->delete();
+        Blog::whereIn('id', request('ids'))->delete();
         return response()->noContent();
     }
 }

@@ -30,4 +30,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     //ipaddress
     Route::resource('ipaddress', 'Admin\IpAddressController');
     Route::delete('ipaddress_mass_destroy', 'Admin\IpAddressController@massDestroy')->name('ipaddress.mass_destroy');
+    //category
+    Route::resource('category', 'Admin\CategoryController');
+    Route::delete('category_mass_destroy', 'Admin\CategoryController@massDestroy')->name('category.mass_destroy');
 });

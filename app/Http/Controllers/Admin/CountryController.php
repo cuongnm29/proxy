@@ -94,7 +94,6 @@ class CountryController extends Controller
             $input['server_id'] = $server;
             CountriesHasServer::create($input);
         }
-        $country->update($request->all());
         return redirect()->route('admin.country.index');
     }
 

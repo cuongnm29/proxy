@@ -17,7 +17,10 @@ class Post extends Model
                             'title', 
                             'slug', 
                             'content',
-                            'images',
+                            'summary',
+                            'isorder',
+                            'ishome',
+                            'photo',
                             'status'
                             ]; 
 }

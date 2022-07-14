@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-@can('coupon_manage')
+@can('ip_manage')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route("admin.ipaddress.create") }}">
@@ -16,7 +16,7 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-coupon">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-ipaddress">
                 <thead>
                     <tr>
                         <th width="10">
@@ -26,7 +26,7 @@
                             {{ trans('cruds.ipaddress.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.ipaddress.fields.ip') }}
+                            {{ trans('cruds.ipaddress.fields.ipName') }}
                         </th>
                         <th>
                             {{ trans('cruds.ipaddress.fields.country') }}
@@ -55,21 +55,25 @@
                                 {{ $ip->ipName ?? '' }}
                             </td>
                             <td>
-                                {{ $ip->countryName ?? '' }}
+                            @foreach($ip->countries()->pluck('name') as $countries)
+                                    <span class="badge badge-info">{{ $countries }}</span>
+                                @endforeach
                             </td>
                             <td>
-                                {{ $ip->serverName ?? '' }}
+                            @foreach($ip->servers()->pluck('name') as $server)
+                                    <span class="badge badge-info">{{ $server }}</span>
+                                @endforeach
                             </td>
                             <td>
-                                {{ $coupon->status == "1" ? 'Enable':'Disable' }}
+                                {{ $ip->status == "1" ? 'Enable':'Disable' }}
                             </td>
                             <td>
                                
-                                <a class="btn btn-xs btn-info" href="{{ route('admin.coupon.edit', $coupon->id) }}">
+                                <a class="btn btn-xs btn-info" href="{{ route('admin.ipaddress.edit', $ip->id) }}">
                                     {{ trans('global.edit') }}
                                 </a>
 
-                                <form action="{{ route('admin.coupon.destroy', $coupon->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                <form action="{{ route('admin.ipaddress.destroy', $ip->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -92,11 +96,11 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('coupon_manage')
+@can('ip_manage')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.coupon.mass_destroy') }}",
+    url: "{{ route('admin.ipaddress.mass_destroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -126,7 +130,7 @@
     order: [[ 1, 'desc' ]],
     pageLength: 100,
   });
-  $('.datatable-coupon:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  $('.datatable-ipaddress:not(.ajaxTable)').DataTable({ buttons: dtButtons })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();
