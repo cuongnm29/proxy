@@ -33,4 +33,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     //category
     Route::resource('category', 'Admin\CategoryController');
     Route::delete('category_mass_destroy', 'Admin\CategoryController@massDestroy')->name('category.mass_destroy');
+    //blog
+    Route::resource('blog', 'Admin\BlogController');
+    Route::delete('blog_mass_destroy', 'Admin\BlogController@massDestroy')->name('blog.mass_destroy');
 });
