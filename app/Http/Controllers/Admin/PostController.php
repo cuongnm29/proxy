@@ -4,21 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-<<<<<<< HEAD:app/Http/Controllers/Admin/BlogController.php
-use App\Http\Requests\Admin\StoreBlogRequest;
-use App\Http\Requests\Admin\UpdateBlogRequest;
-use App\Blog;
-use App\Category;
-use Gate;
-class BlogController extends Controller
-=======
 use App\Post;
 use App\Category;
 use Gate;
 use App\Http\Requests\Admin\StoreBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
 class PostController extends Controller
->>>>>>> master:app/Http/Controllers/Admin/PostController.php
 {
     /**
      * Display a listing of the resource.

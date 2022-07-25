@@ -48,11 +48,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('category', 'Admin\CategoryController');
     Route::delete('category_mass_destroy', 'Admin\CategoryController@massDestroy')->name('category.mass_destroy');
     //blog
-<<<<<<< HEAD
-    Route::resource('blog', 'Admin\BlogController');
-    Route::delete('blog_mass_destroy', 'Admin\BlogController@massDestroy')->name('blog.mass_destroy');
-=======
     Route::resource('post', 'Admin\PostController');
     Route::delete('post_mass_destroy', 'Admin\PostController@massDestroy')->name('post.mass_destroy');
->>>>>>> master
 });

@@ -21,10 +21,7 @@ class UpdateBlogRequest extends FormRequest
      *
      * @return array
      */
-<<<<<<< HEAD
-=======
     
->>>>>>> master
     public function rules()
     {
         return [
