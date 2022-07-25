@@ -67,6 +67,8 @@
                     <option  {{$category->istype==3 ?'selected':''}} value="3">Nạp tiền</option>
                     <option {{$category->istype==4 ?'selected':''}} value="4">Server</option>
                     <option {{$category->istype==5 ?'selected':''}} value="5">Proxy</option>
+                    <option {{$category->istype==6 ?'selected':''}} value="6">Tin tức</option>
+                    <option {{$category->istype==7 ?'selected':''}} value="7">Liên hệ</option>
                 </select>
                 @if($errors->has('istype'))
                 <em class="invalid-feedback">
@@ -90,7 +92,7 @@
                 </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.banners.fields.status_helper') }}
+                    {{ trans('cruds.category.fields.status_helper') }}
                 </p>
             </div>
             <div class="form-group {{ $errors->has('isorder') ? 'has-error' : '' }}">

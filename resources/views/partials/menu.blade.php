@@ -57,6 +57,17 @@
                     
                 </li>
             @endcan
+            @can('blog_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.post.index') }}" class="nav-link {{ request()->is('admin/post') || request()->is('admin/post/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.blog.title') }}
+                    </a>
+                    
+                </li>
+            @endcan
             @can('services_manage')
                 <li class="nav-item nav-dropdown">
                     <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->is('admin/services') || request()->is('admin/services/*') ? 'active' : '' }}">
