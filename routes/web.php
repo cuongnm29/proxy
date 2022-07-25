@@ -1,6 +1,20 @@
 <?php
-Route::redirect('/', 'admin/home');
-
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('auth/register', 'MemberController@register')->name('register');
+    Route::get('auth/login', 'MemberController@login')->name('login');
+    Route::get('auth/logout', 'MemberController@logout')->name('logout');
+    Route::get('payment', 'MemberController@recharge')->name('payment');
+    Route::post('member/create', 'MemberController@create')->name('createMember');
+    Route::post('member/auth', 'MemberController@authMember')->name('authMember');
+    Route::post('member/changepass', 'MemberController@changepass')->name('changepass');
+    Route::get('profile', 'MemberController@profile')->name('profile');
+    Route::get('transaction', 'MemberController@transaction')->name('transaction');
+    Route::get('proxy', 'MemberController@proxy')->name('proxy');
+    Route::get('blog', 'MemberController@new')->name('blog');
+    Route::get('contact', 'MemberController@contact')->name('contact');
+    Route::get('server', 'MemberController@server')->name('server');
+    Route::redirect('/login', '/login');
+  
 Auth::routes(['register' => false]);
 
 // Change Password Routes...
@@ -8,7 +22,7 @@ Route::get('change_password', 'Auth\ChangePasswordController@showChangePasswordF
 Route::patch('change_password', 'Auth\ChangePasswordController@changePassword')->name('auth.change_password');
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', 'Admin/HomeController@index')->name('home');
     Route::resource('permissions', 'Admin\PermissionsController');
     Route::delete('permissions_mass_destroy', 'Admin\PermissionsController@massDestroy')->name('permissions.mass_destroy');
     Route::resource('roles', 'Admin\RolesController');
@@ -34,6 +48,11 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('category', 'Admin\CategoryController');
     Route::delete('category_mass_destroy', 'Admin\CategoryController@massDestroy')->name('category.mass_destroy');
     //blog
+<<<<<<< HEAD
     Route::resource('blog', 'Admin\BlogController');
     Route::delete('blog_mass_destroy', 'Admin\BlogController@massDestroy')->name('blog.mass_destroy');
+=======
+    Route::resource('post', 'Admin\PostController');
+    Route::delete('post_mass_destroy', 'Admin\PostController@massDestroy')->name('post.mass_destroy');
+>>>>>>> master
 });

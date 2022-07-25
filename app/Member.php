@@ -14,7 +14,7 @@ class Member extends Model
     ];
 
     protected $fillable = [
-                            'userName', 
+                            'username', 
                             'password', 
                             'email',
                             'status'

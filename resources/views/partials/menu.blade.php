@@ -59,7 +59,11 @@
             @endcan
             @can('blog_manage')
                 <li class="nav-item nav-dropdown">
+<<<<<<< HEAD
                     <a href="{{ route('admin.blog.index') }}" class="nav-link {{ request()->is('admin/blog') || request()->is('admin/blog/*') ? 'active' : '' }}">
+=======
+                    <a href="{{ route('admin.post.index') }}" class="nav-link {{ request()->is('admin/post') || request()->is('admin/post/*') ? 'active' : '' }}">
+>>>>>>> master
                         <i class="fa-fw fas fa-users nav-icon">
 
                         </i>

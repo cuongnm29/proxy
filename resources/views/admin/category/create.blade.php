@@ -56,6 +56,8 @@
                     <option value="3">Nạp tiền</option>
                     <option value="4">Server</option>
                     <option value="5">Proxy</option>
+                    <option value="6">Tin tức</option>
+                    <option value="7">Liên hệ</option>
                 </select>
                 @if($errors->has('istype'))
                 <em class="invalid-feedback">
