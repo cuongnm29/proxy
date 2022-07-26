@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Coupon extends Model
 {
-    protected $table = 'Coupon';
+    protected $table = 'coupon';
 
     protected $dates = [
         'created_at',

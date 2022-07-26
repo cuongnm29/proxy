@@ -5,17 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Member;
 use App\Category;
+use App\Payment;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 class MemberController extends Controller
 {
     public function __construct()
     {
-        $members=Session::get('member');
-        if(isset($members))
-        {
-            return redirect('auth/login');
-        }
+        
     }
     public function register()
     {
@@ -27,6 +24,8 @@ class MemberController extends Controller
     }
     public function transaction()
     {
+      
+        
         $members=Session::get('member');
         $categories = Category::tree(); 
         return view('transaction',compact('categories','members'));
@@ -62,9 +61,10 @@ class MemberController extends Controller
     }
     public function recharge()
     {
+        $transactions = Payment::get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('recharge',compact('categories','members'));
+        return view('recharge',compact('categories','members','transactions'));
     }
     public function profile()
     {
@@ -117,6 +117,15 @@ class MemberController extends Controller
         }
       
         return redirect("/");
+         }
     }
+    //create recharge
+    public function createrecharge(Request $request)
+    {
+        $request['status']=0;
+        $request['code']= "#PXG".random_int(100000, 999999);
+        Payment::create($request->all());
+        return redirect()->back()->with('success', 'Create recharge successfull!');
     }
+    
 }

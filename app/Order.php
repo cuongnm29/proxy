@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $table = 'Order';
+    protected $table = 'order';
 
     protected $dates = [
         'created_at',

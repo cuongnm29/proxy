@@ -2,14 +2,7 @@
     <nav class="sidebar-nav">
 
         <ul class="nav">
-            <li class="nav-item">
-                <a href="{{ route('admin.home') }}" class="nav-link">
-                    <i class="nav-icon fas fa-fw fa-tachometer-alt">
-
-                    </i>
-                    {{ trans('global.dashboard') }}
-                </a>
-            </li>
+          
             @can('users_manage')
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link  nav-dropdown-toggle" href="#">
@@ -59,7 +52,7 @@
             @endcan
             @can('blog_manage')
                 <li class="nav-item nav-dropdown">
-                    <a href="{{ route('admin.blog.index') }}" class="nav-link {{ request()->is('admin/blog') || request()->is('admin/blog/*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.post.index') }}" class="nav-link {{ request()->is('admin/post') || request()->is('admin/post/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-users nav-icon">
 
                         </i>

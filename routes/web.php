@@ -1,20 +1,27 @@
 <?php
+
+Route::get('auth/register', 'MemberController@register')->name('register');
+Route::get('auth/login', 'MemberController@login')->name('login');
+Route::post('member/create', 'MemberController@create')->name('createMember');
+Route::post('member/auth', 'MemberController@authMember')->name('authMember');
+
+Route::group(['middleware' => 'membersession'], function () {
     Route::get('/', 'HomeController@index')->name('home');
-    Route::get('auth/register', 'MemberController@register')->name('register');
-    Route::get('auth/login', 'MemberController@login')->name('login');
-    Route::get('auth/logout', 'MemberController@logout')->name('logout');
-    Route::get('payment', 'MemberController@recharge')->name('payment');
-    Route::post('member/create', 'MemberController@create')->name('createMember');
-    Route::post('member/auth', 'MemberController@authMember')->name('authMember');
-    Route::post('member/changepass', 'MemberController@changepass')->name('changepass');
-    Route::get('profile', 'MemberController@profile')->name('profile');
-    Route::get('transaction', 'MemberController@transaction')->name('transaction');
-    Route::get('proxy', 'MemberController@proxy')->name('proxy');
-    Route::get('blog', 'MemberController@new')->name('blog');
-    Route::get('contact', 'MemberController@contact')->name('contact');
-    Route::get('server', 'MemberController@server')->name('server');
-    Route::redirect('/login', '/login');
-  
+Route::get('auth/logout', 'MemberController@logout')->name('logout');
+Route::get('payment', 'MemberController@recharge')->name('payment');
+Route::post('member/createrecharge', 'MemberController@createrecharge')->name('createrecharge');
+Route::post('member/changepass', 'MemberController@changepass')->name('changepass');
+Route::get('profile', 'MemberController@profile')->name('profile');
+Route::get('transaction', 'MemberController@transaction')->name('transaction');
+Route::get('proxy', 'MemberController@proxy')->name('proxy');
+Route::get('server', 'MemberController@server')->name('server');
+Route::get('countryServer/{serverid}', 'HomeController@getCountriesByServer')->name('countryServer');
+Route::redirect('/login', '/login');
+});
+Route::get('blog', 'MemberController@new')->name('blog');
+Route::get('contact', 'MemberController@contact')->name('contact');
+
+
 Auth::routes(['register' => false]);
 
 // Change Password Routes...
@@ -22,7 +29,7 @@ Route::get('change_password', 'Auth\ChangePasswordController@showChangePasswordF
 Route::patch('change_password', 'Auth\ChangePasswordController@changePassword')->name('auth.change_password');
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/home', 'Admin/HomeController@index')->name('home');
+    Route::get('/dashboard', 'Admin\HomeController@index')->name('dashboard');
     Route::resource('permissions', 'Admin\PermissionsController');
     Route::delete('permissions_mass_destroy', 'Admin\PermissionsController@massDestroy')->name('permissions.mass_destroy');
     Route::resource('roles', 'Admin\RolesController');

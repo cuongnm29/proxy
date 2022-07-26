@@ -14,26 +14,42 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <div class="table-responsive">
-                    <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="datatable_length"><label>Show <select name="datatable_length" aria-controls="datatable" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="datatable_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="datatable"></label></div></div></div><div class="row"><div class="col-sm-12"><table id="datatable" class="table table-bordered dt-responsive nowrap dataTable no-footer" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info">
+            @if(session()->has('success'))
+                <div class="alert alert-success">
+                    {{ session()->get('success') }}
+                </div>
+            @endif
+                <div class="table-responsive">  
+                     <table id="datatable" class="table table-bordered dt-responsive nowrap dataTable no-footer" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info">
                         <thead>
-                            <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#: activate to sort column descending" style="width: 48px;">#</th><th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Mã giao dịch: activate to sort column ascending" style="width: 180px;">Mã giao dịch</th><th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Phương thức: activate to sort column ascending" style="width: 181px;">Phương thức</th><th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Số tiền: activate to sort column ascending" style="width: 115px;">Số tiền</th><th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Trạng thái: activate to sort column ascending" style="width: 151px;">Trạng thái</th><th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Thời gian: activate to sort column ascending" style="width: 235px;">Thời gian</th><th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Cập nhật: activate to sort column ascending" style="width: 159px;">Cập nhật</th><th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Hành động: activate to sort column ascending" style="width: 158px;">Hành động</th></tr>
+                            <tr role="row">
+                                <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#: activate to sort column descending" style="width: 48px;">#</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Mã giao dịch: activate to sort column ascending" style="width: 180px;">Mã giao dịch</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Phương thức: activate to sort column ascending" style="width: 181px;">Phương thức</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Số tiền: activate to sort column ascending" style="width: 115px;">Số tiền</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Trạng thái: activate to sort column ascending" style="width: 151px;">Trạng thái</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Thời gian: activate to sort column ascending" style="width: 235px;">Thời gian</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Hành động: activate to sort column ascending" style="width: 158px;">Hành động</th>
+                            </tr>
                         </thead>
                         <tbody>
-                                                            
-                                                    <tr class="odd">
-                                    <td class="sorting_1">1</td>
-                                    <td><a href="/account/payment/PXG721734">#PXG721734</a></td>
+                                @foreach($transactions as $key=> $transaction)
+                                        
+                              <tr class="{{$key%2 ? 'event':'odd'}}">
+                                    <td class="sorting_1">{{$key +1}}</td>
+                                    <td>{{$transaction->code}}</td>
                                     <td>Vietcombank</td>
                                     <td>
-                                        <font color="red" class="fw-bold">100,000 đ</font>
+                                        <font color="red" class="fw-bold">{{number_format($transaction->money, 0, '', ',')}} đ</font>
                                     </td>
-                                    <td><span class="badge bg-danger">Hết hạn</span></td>
-                                    <td>2022-06-24 23:19:17</td>
-                                    <td>30 ngày trước</td>
-                                    <td><a href="/account/payment/PXG721734"><i class="fa fa-eye"></i> Chi tiết</a></td>
-                                </tr></tbody>
-                    </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="datatable_previous"><a href="#" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                                    <td><span class="badge {{$transaction->status ? 'bg-success': 'bg-warning'}}">{{$transaction->status? "Đã thanh toán":"Chờ thanh toán"}}</span></td>
+                                    <td>{{$transaction->created_at}}</td>
+                                    <td><a href=""><i class="fa fa-eye"></i> Chi tiết</a></td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                    </table>
+                </div>
                 </div>
             </div>
         </div>
@@ -47,21 +63,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="form-recharge">
+            <form action="{{ route('createrecharge') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
                     <div class="mb-3">
                         <label for="value" class="form-label">Số tiền cần nạp</label>
-                        <input type="number" class="form-control" id="value" name="value" placeholder="Số tiền cần nạp" required="">
+                        <input type="number" class="form-control" id="money" name="money" placeholder="Số tiền cần nạp" required="">
                     </div>
                     <div class="mb-3">
                         <label for="method" class="form-label">Phương thức thanh toán</label>
-                        <select name="method" id="method" class="form-control" required="">
+                        <select name="method" id="method" name="method" class="form-control" required="">
                                                             <option value="1">Vietcombank</option>
                                                     </select>
                     </div>
 
                     <div class="text-end">
+                        <input type="hidden" id="memberid" name="memberid" value="{{$members->id}}">
                         <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-success waves-effect waves-light btn-create-invoice">Tiếp tục</button>
+                        <button type="submit" class="btn btn-success waves-effect waves-light btn-create-invoice">Tiếp tục</button>
                     </div>
                 </form>
             </div>
@@ -69,3 +87,19 @@
     </div><!-- /.modal-dialog -->
 </div>
 </div>
+<script>
+     $(document).ready(function() {
+        $("#datatable").DataTable({
+            responsive: false,
+            // order: [
+            //     [0, 'desc']
+            // ],
+            dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    })
+    </script>

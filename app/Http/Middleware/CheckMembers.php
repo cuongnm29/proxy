@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Session;
-class CheckMember
+
+class CheckMembers
 {
     /**
      * Handle an incoming request.
@@ -15,9 +15,8 @@ class CheckMember
      */
     public function handle($request, Closure $next)
     {
-        $members=Session::get('member');
-        if(isset($members))
-        {
+        if (!$request->session()->exists('member')) {
+           
             return redirect('auth/login');
         }
         return $next($request);

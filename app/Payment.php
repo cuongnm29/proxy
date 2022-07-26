@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    protected $table = 'Payment';
+    protected $table = 'payment';
 
     protected $dates = [
         'created_at',
@@ -15,6 +15,7 @@ class Payment extends Model
 
     protected $fillable = [
                             'money', 
+                            'memberid',
                             'status', 
                             'code',
                             'method'

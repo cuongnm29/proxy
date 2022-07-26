@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Server;
 class Country extends Model
 {
-    protected $table = 'Country';
+    protected $table = 'country';
 
     protected $dates = [
         'created_at',

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class IpAddress extends Model
 {
-    protected $table = 'IpAddress';
+    protected $table = 'ipaddress';
 
     protected $dates = [
         'created_at',
