@@ -1,7 +1,7 @@
 <html>
 
     <head>
-    <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>ProxyGame.VN - Nhà cung cấp PROXY, VPS IP Private các quốc gia trên thế giới</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Cung cấp dịch vụ Proxy Ipv4 Ipv6, VPS, Các dịch vụ Ebay, Amazon, Droping, Proxy Việt Nam, Proxy VN, Proxy private US, Proxy Private Mỹ,  Proxy Ebay" name="description">
@@ -41,7 +41,7 @@
 <script src="{{asset('libs/js/jquery.min.js')}}"></script>
 <script src="{{asset('libs/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('libs/js/metisMenu.min.js')}}"></script>
-
+<script src="{{asset('libs/js/waves.min.js')}}" aria-hidden="true"></script>
 <!-- Required datatable js -->
 <script src="{{asset('libs/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('libs/js/dataTables.bootstrap4.min.js')}}"></script>

@@ -1,5 +1,8 @@
-<div class="container-fluid"><link rel="stylesheet" href="assets/custom/css/countrySelect.min.css">
-
+<div class="container-fluid">
+<link rel="stylesheet" href="{{asset('libs/css/swiper-bundle.min.css')}}">
+<script src="{{asset('libs/js/swiper-bundle.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('libs/css/sweetalert2.min.css')}}">
+<script src="{{asset('libs/js/sweetalert2.min.js')}}"></script>
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -85,22 +88,17 @@ Trân trọng !</font></b></span><br></h4>            </div>
                                 <div class="col-12">
                                     <div class="mb-2">
                                         <label class="form-label">Số lượng</label>
-                                        <input class="form-control" type="number" id="amount" name="amount" placeholder="Số lượng cần mua" value="1"  required="">
+                                        <input class="form-control" type="number" id="amount-{{$key}}" name="amount" placeholder="Số lượng cần mua" value="1" onchange="checkPrice({{$key}})"  required="">
 
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-2">
                                         <label class="form-label">Thời gian mua</label>
-                                        <select name="period" id="period" class="form-control"  required="">
-                                            <option value="3">3 ngày</option>
-                                            <option value="7">1 tuần</option>
-                                            <option value="14">2 tuần</option>
-                                            <option value="30">1 tháng</option>
-                                            <option value="60">2 tháng</option>
-                                            <option value="90">3 tháng</option>
-                                            <option value="180">6 tháng</option>
-                                            <option value="360">12 tháng</option>
+                                        <select name="period-{{$key}}" id="period-{{$key}}" class="form-control"  required="">
+                                        @foreach($server->time() as $time)
+                                            <option value="{{$time->id}}">{{$time->name}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -112,11 +110,12 @@ Trân trọng !</font></b></span><br></h4>            </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="mt-2">
-                                        <div class="alert alert-success text-center">Tổng: <span id="total_price">₫3,300</span></div>
+                                        <div class="alert alert-success text-center">Tổng: <span id="total_price_{{$key}}">  đ{{ number_format($service->money, 0, '', ',') ?? '' }} </span></div>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn w-100 btn-success mt-2 btn-create" type="button" data-package="proxy6" data-group="server01">Mua ngay</button>
+                                    <input type ="hidden" id="money-{{$key}}" value = "{{$service->money}}">
+                                    <button class="btn w-100 btn-success mt-2 btn-create" type="button" data-package="{{$key}}" >Mua ngay</button>
                                 </div>
                             </div>
                         </form>
@@ -181,6 +180,75 @@ function changeserver($id,$key){
         alert("Request: "+JSON.stringify(request));
     }
 });
+$.ajax({
+    url : '/timeServer/'+$id,
+    type : 'GET',
+    dataType:'json',
+    success : function(data) {      
+        $("#period-"+$key).empty();        
+        $.each(data, function(key,value) {
+            $("#period-"+$key).append($('<option value='+value.code+'>'+value.name+'</option>'));
+        }); 
+    },
+    error : function(request,error)
+    {
+        alert("Request: "+JSON.stringify(request));
+    }
+});
 }
+ function checkPrice($key)
+ {
+   
+    let check_out_price = 0;
+    check_out_price =  numberFormat($("#amount-"+$key).val() * $("#money-"+$key).val());
+    $("#total_price_"+$key).html(check_out_price);
 
+ }
+ function numberFormat(num) {
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'VND',
+        });
+
+        return formatter.format(num);
+    }
+    
+</script>
+<script>
+    $(".btn-create").click(function(e) {
+        let package = $(e.target).data('package');
+        let country = $("#country-"+package).val();
+        let server  = $("#server-"+package).val();
+        let amount  = $("#amount-"+package).val();
+        let period  = $("#period-"+package).val();
+        let money  = $("#money-"+package).val();
+        swal({
+            title: 'Bạn chắc chứ?',
+            text: "Bạn đã kiểm tra kỹ đơn hàng chưa?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Mua ngay',
+            cancelButtonText: 'Huỷ'
+        }).then((result) => {
+            if (result) {
+                $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url : '/createOrder/'+server+"/"+country+"/"+amount+"/"+period+"/"+money,
+                type : 'POST',
+                dataType:'json',
+                success : function(data) {      
+                 alert(data);
+                },
+                error : function(request,error)
+                {
+                    alert("Request: "+JSON.stringify(request));
+                }
+            });
+            }
+        })
+    })
 </script>

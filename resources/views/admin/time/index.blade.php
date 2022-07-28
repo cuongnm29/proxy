@@ -1,41 +1,38 @@
 @extends('layouts.admin')
 @section('content')
-@can('services_manage')
+@can('time_manage')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route("admin.services.create") }}">
-                {{ trans('global.add') }} {{ trans('cruds.service.title_singular') }}
+            <a class="btn btn-success" href="{{ route("admin.time.create") }}">
+                {{ trans('global.add') }} {{ trans('cruds.time.title_singular') }}
             </a>
         </div>
     </div>
 @endcan
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.service.title_singular') }} {{ trans('global.list') }}
+        {{ trans('cruds.time.title_singular') }} {{ trans('global.list') }}
     </div>
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-service">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-time">
                 <thead>
                     <tr>
                         <th width="10">
 
                         </th>
                         <th>
-                            {{ trans('cruds.service.fields.id') }}
+                            {{ trans('cruds.time.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.service.fields.name') }}
+                            {{ trans('cruds.time.fields.name') }}
                         </th>
                         <th>
-                            {{ trans('cruds.service.fields.description') }}
+                            {{ trans('cruds.time.fields.server') }}
                         </th>
                         <th>
-                            {{ trans('cruds.service.fields.money') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.service.fields.status') }}
+                            {{ trans('cruds.time.fields.status') }}
                         </th>
                         <th>
                             &nbsp;
@@ -43,33 +40,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($services as $key => $service)
-                        <tr data-entry-id="{{ $service->id }}">
+                    @foreach($times as $key => $time)
+                        <tr data-entry-id="{{ $time->id }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $service->id ?? '' }}
+                                {{ $time->id ?? '' }}
                             </td>
                             <td>
-                                {{ $service->name ?? '' }}
+                                {{ $time->name ?? '' }}
                             </td>
                             <td>
-                                {{ $service->description ?? '' }}
+                            @foreach($time->servers()->pluck('name') as $server)
+                                    <span class="badge badge-info">{{ $server }}</span>
+                                @endforeach
                             </td>
                             <td>
-                                {{ number_format($service->money, 0, '', ',') ?? '' }} đ
-                            </td>
-                            <td>
-                                {{ $service->status == "1" ? 'Enable':'Disable' }}
+                                {{ $time->status == "1" ? 'Enable':'Disable' }}
                             </td>
                             <td>
                                
-                                <a class="btn btn-xs btn-info" href="{{ route('admin.services.edit', $service->id) }}">
+                                <a class="btn btn-xs btn-info" href="{{ route('admin.time.edit', $time->id) }}">
                                     {{ trans('global.edit') }}
                                 </a>
 
-                                <form action="{{ route('admin.services.destroy', $service->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                <form action="{{ route('admin.time.destroy', $time->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -92,11 +88,11 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('services_manage')
+@can('time_manage')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.services.mass_destroy') }}",
+    url: "{{ route('admin.time.mass_destroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -126,7 +122,7 @@
     order: [[ 1, 'desc' ]],
     pageLength: 100,
   });
-  $('.datatable-service:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  $('.datatable-time:not(.ajaxTable)').DataTable({ buttons: dtButtons })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();

@@ -44,6 +44,11 @@
                     @endif
                     @if(count($category->child)>0)
                     <ul class="sub-menu mm-collapse" aria-expanded="false">
+                        @if($category->istype  =4)
+                        @foreach($servers as $server)
+                        <li><a href='/server'>{{$server->name}}</a>
+                        @endforeach
+                        @else
                          @foreach($category->child as $child)
                             <li><a href='@switch($child->istype)
                                 @case(1)
@@ -55,9 +60,6 @@
                                 @case(3)
                                     {{"/payment"}}
                                     @break;
-                                @case(4)
-                                   {{"/server"}}
-                                   @break;
                                 @case(5)
                                    {{"/proxy"}}
                                    @break;
@@ -70,7 +72,9 @@
                                 @default
                                     {{"#section-works"}}
                             @endswitch '>{{$child->name}}</a></li>
+                            
                         @endforeach
+                        @endif
                     </ul>
                     @endif
                 </li>

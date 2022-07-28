@@ -45,7 +45,18 @@
                     {{ trans('cruds.service.fields.content_helper') }}
                 </p>
             </div>
-            
+            <div class="form-group {{ $errors->has('money') ? 'has-error' : '' }}">
+                <label for="name">{{ trans('cruds.service.fields.money') }}*</label>
+                <input type="text" id="money" name="money" class="form-control" value="{{ old('money', isset($services) ? $services->money : '') }}" required>
+                @if($errors->has('money'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('money') }}
+                    </em>
+                @endif
+                <p class="helper-block">
+                    {{ trans('cruds.service.fields.money_helper') }}
+                </p>
+            </div>
             <div class="form-group {{ $errors->has('isorder') ? 'has-error' : '' }}">
                 <label for="name">{{ trans('cruds.service.fields.order') }}*</label>
                 <input type="number" id="isorder" name="isorder" class="form-control" value="{{ old('isorder', isset($services) ? $services->isorder : '') }}" required>

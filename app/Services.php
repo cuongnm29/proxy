@@ -19,6 +19,7 @@ class Services extends Model
                             'content',
                             'icon',
                             'isorder',
+                            'money',
                             'status'
                             ]; 
    public static function tree() {

@@ -3,33 +3,33 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.edit') }} {{ trans('cruds.blog.title_singular') }}
+        {{ trans('global.edit') }} {{ trans('cruds.post.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form action="{{ route("admin.blog.update", [$blog->id]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route("admin.post.update", [$post->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-group {{ $errors->has('catid') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.blog.title_singular') }}*</label>
+                <label for="name">{{ trans('cruds.post.title_singular') }}*</label>
                 <select id="catid" name="catid" class="form-control">
-                    <option value="">{{ trans('cruds.blog.title_selection') }} </option>
+                    <option value="">{{ trans('cruds.post.title_selection') }} </option>
                     @foreach ($categories as $cate)
-                                @if($blog->catid==$cate->id)
+                                @if($post->catid==$cate->id)
                                     <option  selected value="{{$cate->id}}">{{$cate->name }}</option>
                                     @else
                                     <option   value="{{$cate->id}}">{{$cate->name }}</option>
                                 @endif
                                 @if(isset($cate->child))
                                     @foreach ($cate->child as $subchild)
-                                        @if($blog->catid==$subchild->id)
+                                        @if($post->catid==$subchild->id)
                                             <option  selected value="{{$subchild->id}}">--{{$subchild->name }}</option>
                                         @else
                                             <option   value="{{$subchild->id}}">--{{$subchild->name }}</option>
                                         @endif
                                             @if(count($subchild->child))
                                                 @foreach ($subchild->child as $subchildlv)
-                                                    @if($blog->catid==$subchildlv->id)
+                                                    @if($post->catid==$subchildlv->id)
                                                         <option selected value="{{$subchildlv->id}}">------{{$subchildlv->name }}</option>
                                                     @else
                                                         <option value="{{$subchildlv->id}}">------{{$subchildlv->name }}</option>
@@ -48,8 +48,8 @@
                 @endif
             </div>
             <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.blog.fields.name') }}*</label>
-                <input type="text" id="title" name="title" class="form-control"   value="{{ old('title', isset($blog) ? $blog->title : '') }}"
+                <label for="name">{{ trans('cruds.post.fields.name') }}*</label>
+                <input type="text" id="title" name="title" class="form-control"   value="{{ old('title', isset($post) ? $post->title : '') }}"
                     >
                 @if($errors->has('title'))
                 <em class="invalid-feedback">
@@ -57,36 +57,36 @@
                 </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.blog.fields.name_helper') }}
+                    {{ trans('cruds.post.fields.name_helper') }}
                 </p>
             </div>
             <div class="form-group {{ $errors->has('summary') ? 'has-error' : '' }}">
-                <label for="email">{{ trans('cruds.blog.fields.summary') }}*</label>
-                <textarea id="summary" name="summary" class="form-control">{!! old('summary', isset($blog) ? $blog->summary : '')!!}</textarea>
+                <label for="email">{{ trans('cruds.post.fields.summary') }}*</label>
+                <textarea id="summary" name="summary" class="form-control">{!! old('summary', isset($post) ? $post->summary : '')!!}</textarea>
                 @if($errors->has('summary'))
                 <em class="invalid-feedback">
                     {{ $errors->first('summary') }}
                 </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.blog.fields.summary_helper') }}
+                    {{ trans('cruds.post.fields.summary_helper') }}
                 </p>
             </div>
             <div class="form-group {{ $errors->has('content') ? 'has-error' : '' }}">
-                <label for="email">{{ trans('cruds.blog.fields.content') }}*</label>
-                <textarea id="content" name="content" class="form-control">{!! old('content', isset($blog) ? $blog->content : '')!!}</textarea>
+                <label for="email">{{ trans('cruds.post.fields.content') }}*</label>
+                <textarea id="content" name="content" class="form-control">{!! old('content', isset($post) ? $post->content : '')!!}</textarea>
                 @if($errors->has('content'))
                 <em class="invalid-feedback">
                     {{ $errors->first('content') }}
                 </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.blog.fields.content_helper') }}
+                    {{ trans('cruds.post.fields.content_helper') }}
                 </p>
             </div>
             <div class="form-group {{ $errors->has('isorder') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.blog.fields.order') }}*</label>
-                <input type="text" id="isorder" name="isorder" class="form-control" value="{{ old('isorder', isset($blog) ? $blog->isorder : '') }}"
+                <label for="name">{{ trans('cruds.post.fields.order') }}*</label>
+                <input type="text" id="isorder" name="isorder" class="form-control" value="{{ old('isorder', isset($post) ? $post->isorder : '') }}"
                      >
                 @if($errors->has('isorder'))
                 <em class="invalid-feedback">
@@ -94,21 +94,21 @@
                 </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.blog.fields.order_helper') }}
+                    {{ trans('cruds.post.fields.order_helper') }}
                 </p>
             </div>
            
            
             
             <div class="form-group {{ $errors->has('photo') ? 'has-error' : '' }}">
-                <label for="photo" required>{{ trans('cruds.blog.fields.photo') }}*</label>
+                <label for="photo" required>{{ trans('cruds.post.fields.photo') }}*</label>
                 <div class="input-group">
                     <span class="input-group-btn">
                         <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
                             <i class="fa fa-picture-o"></i> Choose
                         </a>
                     </span>
-                    <input id="thumbnail" class="form-control" type="text" name="photo" value="{{ old('photo', isset($blog) ? $blog->photo : '') }}">
+                    <input id="thumbnail" class="form-control" type="text" name="photo" value="{{ old('photo', isset($post) ? $post->photo : '') }}">
                 </div>
                 <img id="holder" style="margin-top:15px;max-height:100px;"/>
                 @if($errors->has('photo'))
@@ -117,11 +117,11 @@
                 </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.blog.fields.photo_helper') }}
+                    {{ trans('cruds.post.fields.photo_helper') }}
                 </p>
             </div>
             <div class="form-group {{ $errors->has('status') ? 'has-error' : '' }}">
-                <label for="status">{{ trans('cruds.blog.fields.status') }}
+                <label for="status">{{ trans('cruds.post.fields.status') }}
                 </label>
                 <select name="status" id="status" class="form-control select">
                     <option value="1">Enable</option>
@@ -133,11 +133,11 @@
                 </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.blog.fields.status_helper') }}
+                    {{ trans('cruds.post.fields.status_helper') }}
                 </p>
             </div>
             <div class="form-group {{ $errors->has('ishome') ? 'has-error' : '' }}">
-                <label for="status">{{ trans('cruds.blog.fields.ishome') }}
+                <label for="status">{{ trans('cruds.post.fields.ishome') }}
                 </label>
                 <select name="ishome" id="ishome" class="form-control select">
                     <option value="1">Enable</option>
@@ -149,7 +149,7 @@
                 </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.blog.fields.status_helper') }}
+                    {{ trans('cruds.post.fields.status_helper') }}
                 </p>
             </div>
             <div>

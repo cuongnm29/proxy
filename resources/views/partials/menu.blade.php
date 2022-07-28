@@ -50,13 +50,24 @@
                     
                 </li>
             @endcan
-            @can('blog_manage')
+            @can('time_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.time.index') }}" class="nav-link {{ request()->is('admin/time') || request()->is('admin/time/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.time.title') }}
+                    </a>
+                    
+                </li>
+            @endcan
+            @can('post_manage')
                 <li class="nav-item nav-dropdown">
                     <a href="{{ route('admin.post.index') }}" class="nav-link {{ request()->is('admin/post') || request()->is('admin/post/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-users nav-icon">
 
                         </i>
-                        {{ trans('cruds.blog.title') }}
+                        {{ trans('cruds.post.title') }}
                     </a>
                     
                 </li>
@@ -103,6 +114,37 @@
                         {{ trans('cruds.coupon.title') }}
                     </a>
                     
+                </li>
+            @endcan
+            @can('payment_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.payment.index') }}" class="nav-link {{ request()->is('admin/payment') || request()->is('admin/payment/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.payment.title') }}
+                    </a>
+                    
+                </li>
+            @endcan
+            @can('orders_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.orders.index') }}" class="nav-link {{ request()->is('admin/orders') || request()->is('admin/orders/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.orders.title') }}
+                    </a>
+                </li>
+            @endcan
+            @can('member_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.member.index') }}" class="nav-link {{ request()->is('admin/member') || request()->is('admin/member/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.member.title') }}
+                    </a>
                 </li>
             @endcan
             @can('ip_manage')

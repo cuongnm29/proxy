@@ -20,4 +20,10 @@ class Payment extends Model
                             'code',
                             'method'
                             ]; 
+    public  function members() {
+        return $this->belongsToMany(Member::class,
+                                    Payment::class,
+                                    'id',
+                                    'memberid');
+    }
 }

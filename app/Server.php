@@ -30,5 +30,10 @@ class Server extends Model
                                         'server_id',
                                         'countries_id')->select('name','code')->get();
         }
-        
+        public  function time() {
+            return $this->belongsToMany(Time::class,
+                                        TimeHasServer::class,
+                                        'server_id',
+                                        'time_id')->select('name','id')->get();
+        }
 }

@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
 use Gate;
-use App\Http\Requests\Admin\StoreBlogRequest;
-use App\Http\Requests\Admin\UpdateBlogRequest;
+use App\Http\Requests\Admin\StorePostRequest;
+use App\Http\Requests\Admin\UpdatePostRequest;
+use Illuminate\Support\Str;
 class PostController extends Controller
 {
     /**
@@ -18,11 +19,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('blog_manage')) {
+        if (! Gate::allows('post_manage')) {
             return abort(401);
         }
-        $blogs = Post::get();  
-        return view('admin.post.index', compact('blogs'));
+        $posts = Post::get();  
+        return view('admin.post.index', compact('posts'));
     }
 
     /**
@@ -32,7 +33,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        if (! Gate::allows('blog_manage')) {
+        if (! Gate::allows('post_manage')) {
             return abort(401);
         }
         $categories = Category::treeNews();
@@ -45,9 +46,9 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBlogRequest  $request)
+    public function store(StorePostRequest  $request)
     {
-        if (! Gate::allows('blog_manage')) {
+        if (! Gate::allows('post_manage')) {
             return abort(401);
         }
         $request['slug']=Str::slug($request->title, '-');
@@ -62,13 +63,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $blog)
+    public function edit(Post $post)
     {
-        if (! Gate::allows('blog_manage')) {
+        if (! Gate::allows('post_manage')) {
             return abort(401);
         }
         $categories = Category::treeNews();
-        return view('admin.post.edit', compact( 'blog','categories'));
+        return view('admin.post.edit', compact( 'post','categories'));
     }
 
     /**
@@ -78,13 +79,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBlogRequest $request, Blog $blog)
+    public function update(UpdatePostRequest $request, post $post)
     {
-        if (! Gate::allows('blog_manage')) {
+        if (! Gate::allows('post_manage')) {
             return abort(401);
         }
         $request['slug']=Str::slug($request->title, '-');
-        $blog->update($request->all());
+        $post->update($request->all());
 
         return redirect()->route('admin.post.index');
     }
@@ -95,20 +96,21 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $blog)
+    public function destroy(Post $post)
     {
-        if (! Gate::allows('blog_manage')) {
+        if (! Gate::allows('post_manage')) {
             return abort(401);
         }
-        $blog->delete();
+        $post->delete();
         return back();
     }
     public function massDestroy(Request $request)
     {
-        if (! Gate::allows('blog_manage')) {
+        if (! Gate::allows('post_manage')) {
             return abort(401);
         }
         Post::whereIn('id', request('ids'))->delete();
+
         return response()->noContent();
     }
 }

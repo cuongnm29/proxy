@@ -16,6 +16,8 @@ Route::get('transaction', 'MemberController@transaction')->name('transaction');
 Route::get('proxy', 'MemberController@proxy')->name('proxy');
 Route::get('server', 'MemberController@server')->name('server');
 Route::get('countryServer/{serverid}', 'HomeController@getCountriesByServer')->name('countryServer');
+Route::get('timeServer/{serverid}', 'HomeController@getTimeByServer')->name('timeServer');
+Route::post('createOrder/{server}/{country}/{amount}/{period}/{money}', 'HomeController@createOrder')->name('createOrder');
 Route::redirect('/login', '/login');
 });
 Route::get('blog', 'MemberController@new')->name('blog');
@@ -57,4 +59,13 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     //blog
     Route::resource('post', 'Admin\PostController');
     Route::delete('post_mass_destroy', 'Admin\PostController@massDestroy')->name('post.mass_destroy');
+    //time
+    Route::resource('time', 'Admin\TimeController');
+    Route::delete('time_mass_destroy', 'Admin\TimeController@massDestroy')->name('time.mass_destroy');
+    //payment
+     Route::resource('payment', 'Admin\PaymentController');
+      //order
+    Route::resource('orders', 'Admin\OrderController');
+    //member
+    Route::resource('member', 'Admin\MemberController');
 });

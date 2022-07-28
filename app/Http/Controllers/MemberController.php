@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Member;
 use App\Category;
 use App\Payment;
+use App\Server;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 class MemberController extends Controller
@@ -25,34 +26,38 @@ class MemberController extends Controller
     public function transaction()
     {
       
-        
+        $servers = Server::orderby("isorder")->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('transaction',compact('categories','members'));
+        return view('transaction',compact('categories','members','servers'));
     }
     public function proxy()
     {
+        $servers = Server::orderby("isorder")->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('proxy',compact('categories','members'));
+        return view('proxy',compact('categories','members','servers'));
     }
     public function new()
     {
+        $servers = Server::orderby("isorder")->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('new',compact('categories','members'));
+        return view('new',compact('categories','members','servers'));
     }
     public function contact()
     {
+        $servers = Server::orderby("isorder")->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('contact',compact('categories','members'));
+        return view('contact',compact('categories','members','servers'));
     }
     public function server()
     {
+        $servers = Server::orderby("isorder")->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('server',compact('categories','members'));
+        return view('server',compact('categories','members','servers'));
     }
     public function logout()
     {
@@ -61,10 +66,12 @@ class MemberController extends Controller
     }
     public function recharge()
     {
-        $transactions = Payment::get();
+        $members=Session::get('member');
+        $servers = Server::orderby("isorder")->get();
+        $transactions = Payment::where('memberid',$members->id)->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('recharge',compact('categories','members','transactions'));
+        return view('recharge',compact('categories','members','transactions','servers'));
     }
     public function profile()
     {
