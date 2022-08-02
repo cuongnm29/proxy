@@ -1,7 +1,11 @@
 @extends('layouts.frontend')
 @section('content')
 
-
+<div class="container-fluid">
+<link rel="stylesheet" href="{{asset('libs/css/swiper-bundle.min.css')}}">
+<script src="{{asset('libs/js/swiper-bundle.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('libs/css/sweetalert2.min.css')}}">
+<script src="{{asset('libs/js/sweetalert2.min.js')}}"></script>
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -17,7 +21,10 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 style="font-family: "><b style=""><font color="#ff0000"><span style="font-family: " comic="" sans="" ms";"="">Chào mừng bạn đến với website ProxyGame.VN</span></font></b></h4><h4 style="font-family: "></h4><h5><b style=""><span style="" comic="" sans="" ms";"=""><font color="#424242">Các dịch vụ chúng tôi cung cấp: </font></span></b></h5><h5><b style=""><span style="" comic="" sans="" ms";"=""><font color="#424242">- Proxy Private IPv4, IPv6 các khu vực trên thế giới.</font></span></b></h5><h5><b style=""><span style="" comic="" sans="" ms";"=""><font color="#424242">- Proxy mạng khoẻ chơi game.</font></span></b></h5><h5><b style=""><span style="" comic="" sans="" ms";"=""><font color="#424242">- VPS chính hãng: VN, US, Sing, Đức, Anh, Pháp...</font></span></b></h5><h6><span style="" comic="" sans="" ms";"=""><b><font color="#0000ff">Mọi vấn đề cần hỗ trợ Liên hệ ngay support website SĐT zalo : 0962866512 để biết thêm thông tin chi tiết.</font></b></span></h6>            </div>
+                <h4 style="font-family: "><span style="" segoe="" ui",="" segoeuipc,="" "san="" francisco",="" "helvetica="" neue",="" helvetica,="" "lucida="" grande",="" roboto,="" ubuntu,="" tahoma,="" "microsoft="" sans="" serif",="" arial,="" sans-serif;="" font-size:="" 15px;="" white-space:="" pre-wrap;"=""><b style=""><font color="#0000ff">Thông báo: Hiện tại hệ thống VNPT Net vừa ghi nhận mất liên lạc trên tuyến cáp biển APG, như vậy hiện nay VNPT đang </font><font color="#ff0000">mất liên lạc trên 2 tuyến cáp biển APG và AAG (chiếm gần 70% lưu lượng tổng).
+</font></b></span></h4><h4 style="font-family: "><span style="" segoe="" ui",="" segoeuipc,="" "san="" francisco",="" "helvetica="" neue",="" helvetica,="" "lucida="" grande",="" roboto,="" ubuntu,="" tahoma,="" "microsoft="" sans="" serif",="" arial,="" sans-serif;="" font-size:="" 15px;="" white-space:="" pre-wrap;"=""><b><font color="#0000ff">Vì vậy 1 số dịch vụ VPS, Proxy mà ProxyGame.VN đặt tại DC VNPT bị ảnh hưởng dẫn đến tình trạng kết nối kém, lag đường truyền
+Mong quý khách thông cảm và đợi khắc phục từ phía DC VNPT</font></b></span></h4><h4 style="font-family: "><span style="" segoe="" ui",="" segoeuipc,="" "san="" francisco",="" "helvetica="" neue",="" helvetica,="" "lucida="" grande",="" roboto,="" ubuntu,="" tahoma,="" "microsoft="" sans="" serif",="" arial,="" sans-serif;="" font-size:="" 15px;="" white-space:="" pre-wrap;"=""><b style=""><font color="#0000ff">
+Trân trọng !</font></b></span><br></h4>            </div>
         </div>
     </div>
 </div>
@@ -34,6 +41,7 @@
 <!-- Created proxy -->
 <div class="row">
     <!-- start form -->
+    @foreach($services  as $key=> $service)
     <div class="col-xl-3 col-md-6">
         <div class="card">
             <div class="card-body p-4">
@@ -46,50 +54,34 @@
                         </div>
                     </div>
                     <div class="flex-grow-1">
-                        <h5 class="font-size-16">IPv6 Private Proxy</h5>
-                        <p class="text-muted">Chỉ cho một người dùng.</p>
+                        <h5 class="font-size-16">{{$service->name}}</h5>
+                        <p class="text-muted">{{$service->description}}</p>
                     </div>
                 </div>
                 <div class="py-4 border-bottom">
-                    <h4>3,300 <sup><small>đ</small></sup> / <span class="font-size-16">1 proxy / 3 ngày</span></h4>
+                    <h4> <span class="font-size-16">{{$service->content}}</span></h4>
                     <div>
                         <label class="form-label">Chọn máy chủ</label>
-                        <select class="form-control" onchange="setForm()">
-                            <option value="ipv4-private1">IPv6 Private Server 1</option>
+                        <select class="form-control" id="server-{{$key}}" name="server" onchange= "changeserver($(this).val(),{{$key}})">
+                        @foreach($service->server as $server)
+                            <option value="{{$server->id}}">{{$server->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
 
                 <div class="mt-2">
-                                            <form class="form form-vertical" id="form-proxy6" method="post" action="/api/create">
-                            <input type="hidden" name="version" id="version" value="6">
-                            <input type="hidden" name="type" id="type" value="http">
-                            <input type="hidden" name="group" id="group" value="server01">
+                        <form class="form form-vertical" id="form-proxy6" method="post" action="/api/create">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="mb-2">
                                         <label class="form-label">Quốc gia</label>
                                         <div class="input-group">
-                                            <select name="country" id="country" class="form-control" onchange="setFlag(this,'country_proxy6')">
-                                                                                                    <option value="au">Australia</option>
-                                                                                                    <option value="ae">United Arab Emirates</option>
-                                                                                                    <option value="ca">Canada</option>
-                                                                                                    <option value="co">Colombia</option>
-                                                                                                    <option value="de">Germany</option>
-                                                                                                    <option value="in">India</option>
-                                                                                                    <option value="sg">Singapore</option>
-                                                                                                    <option value="nl">Netherlands</option>
-                                                                                                    <option value="gb">United Kingdom</option>
-                                                                                                    <option value="fr">France</option>
-                                                                                                    <option value="fi">Finland</option>
-                                                                                                    <option value="ua">Ukraine</option>
-                                                                                                    <option value="ru">Russia</option>
-                                                                                                    <option value="jp">Japan</option>
-                                                                                                    <option value="vn">Vietnam</option>
-                                                                                                    <option value="us">United States</option>
-                                                                                                    <option value="hk">Hong Kong SAR China</option>
-                                                                                                    <option value="hu">Hungary</option>
-                                                                                            </select>
+                                            <select name="country" id="country-{{$key}}" class="form-control" onchange="changeCountries($(this).val(),{{$key}})">
+                                                @foreach($server->country() as $country)
+                                                     <option value="{{$country->id}}">{{$country->name}}</option>
+                                               @endforeach
+                                              </select>
                                             <div class="input-group-text">
                                                 <span id="country_proxy6" class="flag au"></span>
                                             </div>
@@ -99,22 +91,18 @@
                                 <div class="col-12">
                                     <div class="mb-2">
                                         <label class="form-label">Số lượng</label>
-                                        <input class="form-control" type="number" id="amount" name="amount" placeholder="Số lượng cần mua" value="1" onchange="checkPrice('proxy6');" required="">
-
+                                        <input class="form-control" type="number" id="amount-{{$key}}" name="amount" placeholder="Số lượng cần mua" value="1" onchange="checkPrice({{$key}})"  required="">
+                                         <span id="remain-{{$key}}"></span>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-2">
                                         <label class="form-label">Thời gian mua</label>
-                                        <select name="period" id="period" class="form-control" onchange="checkPrice('proxy6');" required="">
-                                            <option value="3">3 ngày</option>
-                                            <option value="7">1 tuần</option>
-                                            <option value="14">2 tuần</option>
-                                            <option value="30">1 tháng</option>
-                                            <option value="60">2 tháng</option>
-                                            <option value="90">3 tháng</option>
-                                            <option value="180">6 tháng</option>
-                                            <option value="360">12 tháng</option>
+                                        <select name="period-{{$key}}" id="period-{{$key}}" class="form-control"  required="">
+                                        @foreach($server->time() as $time)
+                                            <option value="{{$time->id}}">{{$time->name}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -126,11 +114,12 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="mt-2">
-                                        <div class="alert alert-success text-center">Tổng: <span id="total_price">₫3,300</span></div>
+                                        <div class="alert alert-success text-center">Tổng: <span id="total_price_{{$key}}">  đ{{ number_format($service->money, 0, '', ',') ?? '' }} </span></div>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn w-100 btn-success mt-2 btn-create" type="button" data-package="proxy6" data-group="server01">Mua ngay</button>
+                                    <input type ="hidden" id="money-{{$key}}" value = "{{$service->money}}">
+                                    <button class="btn w-100 btn-success mt-2 btn-create" type="button" data-package="{{$key}}" >Mua ngay</button>
                                 </div>
                             </div>
                         </form>
@@ -138,553 +127,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-md-6">
-        <div class="card">
-            <div class="card-body p-4">
-                <div class="d-flex mb-1">
-                    <div class="flex-shrink-0 me-3">
-                        <div class="avatar-sm">
-                            <span class="avatar-title rounded-circle bg-primary">
-                                <i class="fas fa-shield-alt font-size-20"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="flex-grow-1">
-                        <h5 class="font-size-16">IPv4 Private Proxy</h5>
-                        <p class="text-muted">Dedicated Proxy</p>
-                    </div>
-                </div>
-                <div class="py-4 border-bottom">
-                    <h4>48,000 <sup><small>đ</small></sup> / <span class="font-size-16">1 proxy / tháng</span></h4>
-                    <div>
-                        <label class="form-label">Chọn máy chủ</label>
-                        <select name="ipv4_server" id="ipv4_server" class="form-control" onchange="setForm()">
-                            <option value="ipv4-private1">IPv4 Private Server 1</option>
-                            <option value="ipv4-private2" selected="">IPv4 Private Server 2</option>
-                            <option value="ipv4-private3">IPv4 Private Server 3</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mt-2">
-                                            <form class="form form-vertical ipv4-private1" id="form-proxy4" method="post" action="/api/create" style="display:none">
-                            <input type="hidden" name="version" id="version" value="4">
-                            <input type="hidden" name="group" id="group" value="server02">
-                            <input type="hidden" name="type" id="type" value="http">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Quốc gia</label>
-                                        <div class="input-group">
-                                            <select name="country" id="country" class="form-control" onchange="setFlag(this,'country_proxy4')">
-                                                                                                    <option value="ru">Russia</option>
-                                                                                                    <option value="fr">France</option>
-                                                                                                    <option value="au">Australia</option>
-                                                                                                    <option value="fi">Finland</option>
-                                                                                                    <option value="kz">Kazakhstan</option>
-                                                                                                    <option value="it">Italy</option>
-                                                                                                    <option value="az">Azerbaijan</option>
-                                                                                                    <option value="no">Norway</option>
-                                                                                                    <option value="in">India</option>
-                                                                                                    <option value="gr">Greece</option>
-                                                                                                    <option value="qa">Qatar</option>
-                                                                                                    <option value="ua">Ukraine</option>
-                                                                                                    <option value="pl">Poland</option>
-                                                                                                    <option value="by">Belarus</option>
-                                                                                                    <option value="gb">United Kingdom</option>
-                                                                                                    <option value="nl">Netherlands</option>
-                                                                                                    <option value="de">Germany</option>
-                                                                                                    <option value="ee">Estonia</option>
-                                                                                                    <option value="ge">Georgia</option>
-                                                                                                    <option value="am">Armenia</option>
-                                                                                                    <option value="md">Moldova</option>
-                                                                                                    <option value="be">Belgium</option>
-                                                                                                    <option value="ae">United Arab Emirates</option>
-                                                                                                    <option value="es">Spain</option>
-                                                                                                    <option value="se">Sweden</option>
-                                                                                                    <option value="sg">Singapore</option>
-                                                                                                    <option value="ar">Argentina</option>
-                                                                                                    <option value="id">Indonesia</option>
-                                                                                                    <option value="cz">Czechia</option>
-                                                                                                    <option value="br">Brazil</option>
-                                                                                                    <option value="jp">Japan</option>
-                                                                                                    <option value="pt">Portugal</option>
-                                                                                                    <option value="ca">Canada</option>
-                                                                                                    <option value="ro">Romania</option>
-                                                                                                    <option value="pe">Peru</option>
-                                                                                                    <option value="cn">China</option>
-                                                                                                    <option value="ch">Switzerland</option>
-                                                                                                    <option value="tr">Turkey</option>
-                                                                                                    <option value="bd">Bangladesh</option>
-                                                                                                    <option value="lt">Lithuania</option>
-                                                                                                    <option value="lv">Latvia</option>
-                                                                                                    <option value="sc">Seychelles</option>
-                                                                                                    <option value="mv">Maldives</option>
-                                                                                                    <option value="cl">Chile</option>
-                                                                                                    <option value="ie">Ireland</option>
-                                                                                                    <option value="ph">Philippines</option>
-                                                                                                    <option value="co">Colombia</option>
-                                                                                                    <option value="th">Thailand</option>
-                                                                                                    <option value="dz">Algeria</option>
-                                                                                                    <option value="eg">Egypt</option>
-                                                                                                    <option value="is">Iceland</option>
-                                                                                                    <option value="mc">Monaco</option>
-                                                                                                    <option value="ve">Venezuela</option>
-                                                                                                    <option value="hu">Hungary</option>
-                                                                                                    <option value="at">Austria</option>
-                                                                                                    <option value="tm">Turkmenistan</option>
-                                                                                                    <option value="uz">Uzbekistan</option>
-                                                                                                    <option value="bo">Bolivia</option>
-                                                                                                    <option value="ke">Kenya</option>
-                                                                                                    <option value="lb">Lebanon</option>
-                                                                                                    <option value="mn">Mongolia</option>
-                                                                                                    <option value="my">Malaysia</option>
-                                                                                                    <option value="py">Paraguay</option>
-                                                                                                    <option value="rs">Serbia</option>
-                                                                                                    <option value="si">Slovenia</option>
-                                                                                                    <option value="zm">Zambia</option>
-                                                                                                    <option value="al">Albania</option>
-                                                                                                    <option value="jm">Jamaica</option>
-                                                                                                    <option value="il">Israel</option>
-                                                                                                    <option value="lr">Liberia</option>
-                                                                                                    <option value="mx">Mexico</option>
-                                                                                                    <option value="uy">Uruguay</option>
-                                                                                                    <option value="lk">Sri Lanka</option>
-                                                                                                    <option value="mg">Madagascar</option>
-                                                                                                    <option value="np">Nepal</option>
-                                                                                                    <option value="cu">Cuba</option>
-                                                                                                    <option value="bg">Bulgaria</option>
-                                                                                                    <option value="za">South Africa</option>
-                                                                                                    <option value="cr">Costa Rica</option>
-                                                                                            </select>
-                                            <div class="input-group-text">
-                                                <span id="country_proxy4" class="flag ru"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Số lượng</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="amount" name="amount" value="1" onchange="checkPrice('proxy4')" placeholder="Số lượng">
-                                            <button class="input-group-text btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#iplist-modal">Chọn IPs</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 js-iplist-clear" style="display:none">
-                                    <div class="mb-2">
-                                        <button class="btn btn-danger w-100 btn-iplist-clear" type="button" onclick="ipSelectedReset()">Đặt lại IP</button>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Thời gian mua</label>
-                                        <select name="period" id="period" class="form-control" onchange="checkPrice('proxy4');" required="">
-                                                                                            <option value="30">30 ngày</option>
-                                                                                            <option value="60">60 ngày</option>
-                                                                                            <option value="90">90 ngày</option>
-                                                                                            <option value="120">120 ngày</option>
-                                                                                            <option value="150">150 ngày</option>
-                                                                                            <option value="180">180 ngày</option>
-                                                                                            <option value="210">210 ngày</option>
-                                                                                            <option value="240">240 ngày</option>
-                                                                                            <option value="270">270 ngày</option>
-                                                                                            <option value="300">300 ngày</option>
-                                                                                            <option value="330">330 ngày</option>
-                                                                                            <option value="360">360 ngày</option>
-                                                                                    </select>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Mã giảm giá (nếu có)</label>
-                                        <input class="form-control" type="text" id="promotion" name="promotion" placeholder="Mã khuyến mãi nếu có">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="mt-2">
-                                        <div class="alert alert-success text-center">Tổng: <span id="total_price">₫48,000</span></div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn w-100 btn-success mt-2 btn-create" type="button" data-package="proxy4" data-group="server02">Mua ngay</button>
-                                </div>
-                            </div>
-                        </form>
-                                        <form class="form form-vertical ipv4-private2" id="form-ipv4" method="post" action="/api/create">
-                        <input type="hidden" name="package" id="package" value="ipv4">
-                        <input type="hidden" name="group" id="group" value="server03">
-                        <input type="hidden" name="type" id="type" value="http">
-                        <div class="row">
-
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Quốc gia</label>
-                                    <div class="input-group">
-                                        <select name="country" id="country" class="form-control" onchange="setFlag(this,'country_ipv4')">
-                                                                                            <option value="vn">Vietnam</option>
-                                                                                            <option value="us">United States</option>
-                                                                                    </select>
-                                        <div class="input-group-text">
-                                            <span id="country_ipv4" class="flag vn"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Số lượng</label>
-                                    <input class="form-control" type="text" id="amount" name="amount" onchange="checkPrice('ipv4')" placeholder="Số lượng cần mua" value="1" required="">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Thời gian mua</label>
-                                    <select name="period" id="period" class="form-control" onchange="checkPrice('ipv4')" required="">
-                                        <option value="30">1 tháng</option>
-                                        <option value="60">2 tháng</option>
-                                        <option value="90">3 tháng</option>
-                                        <option value="180">6 tháng</option>
-                                        <option value="360">12 tháng</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Mã giảm giá (nếu có)</label>
-                                    <input class="form-control" type="text" id="promotion" name="promotion" placeholder="Mã khuyến mãi nếu có">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mt-2">
-                                    <div class="alert alert-success text-center">Tổng: <span id="total_price">₫48,000</span></div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn w-100 btn-success mt-2 btn-create" type="button" data-package="ipv4" data-group="server03">Mua ngay</button>
-                            </div>
-                        </div>
-                    </form>
-                                            <form class="form form-vertical ipv4-private3" id="form-proxy4_3" method="post" action="/api/create" style="display:none">
-                            <input type="hidden" name="version" id="version" value="4">
-                            <input type="hidden" name="group" id="group" value="server02">
-                            <input type="hidden" name="type" id="type" value="http">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Quốc gia</label>
-                                        <div class="input-group">
-                                            <select name="country" id="country" class="form-control" onchange="setFlag(this,'country_ipv4_3')">
-                                                                                                    <option value="ru">Russia</option>
-                                                                                                    <option value="fr">France</option>
-                                                                                                    <option value="au">Australia</option>
-                                                                                                    <option value="fi">Finland</option>
-                                                                                                    <option value="kz">Kazakhstan</option>
-                                                                                                    <option value="it">Italy</option>
-                                                                                                    <option value="az">Azerbaijan</option>
-                                                                                                    <option value="no">Norway</option>
-                                                                                                    <option value="in">India</option>
-                                                                                                    <option value="gr">Greece</option>
-                                                                                                    <option value="qa">Qatar</option>
-                                                                                                    <option value="ua">Ukraine</option>
-                                                                                                    <option value="pl">Poland</option>
-                                                                                                    <option value="by">Belarus</option>
-                                                                                                    <option value="gb">United Kingdom</option>
-                                                                                                    <option value="nl">Netherland</option>
-                                                                                                    <option value="de">Germany</option>
-                                                                                                    <option value="ee">Estonia</option>
-                                                                                                    <option value="ge">Georgia</option>
-                                                                                                    <option value="am">Armenia</option>
-                                                                                                    <option value="md">Moldova</option>
-                                                                                                    <option value="be">Belgium</option>
-                                                                                                    <option value="ae">OAE</option>
-                                                                                                    <option value="es">Spain</option>
-                                                                                                    <option value="se">Sweden</option>
-                                                                                                    <option value="sg">Singapore</option>
-                                                                                                    <option value="ar">Argentina</option>
-                                                                                                    <option value="id">Indonesia</option>
-                                                                                                    <option value="cz">Czech</option>
-                                                                                                    <option value="br">Brazil</option>
-                                                                                                    <option value="jp">Japan</option>
-                                                                                                    <option value="pt">Portugal</option>
-                                                                                                    <option value="ca">Canada</option>
-                                                                                                    <option value="ro">Romania</option>
-                                                                                                    <option value="pe">Peru</option>
-                                                                                                    <option value="cn">China</option>
-                                                                                                    <option value="ch">Switzerland</option>
-                                                                                                    <option value="tr">Turkey</option>
-                                                                                                    <option value="bd">Bangladesh</option>
-                                                                                                    <option value="lt">Lithuania</option>
-                                                                                                    <option value="lv">Latvia</option>
-                                                                                                    <option value="sc">Seychelles</option>
-                                                                                                    <option value="mv">Maldives</option>
-                                                                                                    <option value="cl">Chile</option>
-                                                                                                    <option value="ie">Ireland</option>
-                                                                                                    <option value="ph">Philippines</option>
-                                                                                                    <option value="co">Colombia</option>
-                                                                                                    <option value="th">Thailand</option>
-                                                                                                    <option value="dz">Algeria</option>
-                                                                                                    <option value="eg">Egypt</option>
-                                                                                                    <option value="is">Iceland</option>
-                                                                                                    <option value="mc">Monaco</option>
-                                                                                                    <option value="ve">Venezuela</option>
-                                                                                                    <option value="hu">Hungary</option>
-                                                                                                    <option value="at">Austria</option>
-                                                                                                    <option value="tm">Turkmenistan</option>
-                                                                                                    <option value="uz">Uzbekistan</option>
-                                                                                                    <option value="bo">Bolivia</option>
-                                                                                                    <option value="ke">Kenya</option>
-                                                                                                    <option value="lb">Lebanon</option>
-                                                                                                    <option value="mn">Mongolia</option>
-                                                                                                    <option value="my">Malaysia</option>
-                                                                                                    <option value="py">Paraguay</option>
-                                                                                                    <option value="rs">Serbia</option>
-                                                                                                    <option value="si">Slovenia</option>
-                                                                                                    <option value="zm">Zambia</option>
-                                                                                                    <option value="al">Albania</option>
-                                                                                                    <option value="jm">Jamaica</option>
-                                                                                                    <option value="il">Israel</option>
-                                                                                                    <option value="lr">Libya</option>
-                                                                                                    <option value="mx">Mexico</option>
-                                                                                                    <option value="uy">Uruguay</option>
-                                                                                                    <option value="lk">Sri Lanka</option>
-                                                                                                    <option value="mg">Madagascar</option>
-                                                                                                    <option value="np">Nepal</option>
-                                                                                                    <option value="cu">Cuba</option>
-                                                                                                    <option value="bg">Bulgaria</option>
-                                                                                                    <option value="za">South Africa</option>
-                                                                                                    <option value="cr">Costa Rica</option>
-                                                                                            </select>
-                                            <div class="input-group-text">
-                                                <span id="country_ipv4_3" class="flag ru"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Số lượng</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="amount" name="amount" value="1" onchange="checkPrice('proxy4_3')" placeholder="Số lượng">
-                                            <button class="input-group-text btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#iplist-modal">Chọn IPs</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 js-iplist-clear" style="display:none">
-                                    <div class="mb-2">
-                                        <button class="btn btn-danger w-100 btn-iplist-clear" type="button" onclick="ipSelectedReset()">Đặt lại IP</button>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Thời gian mua</label>
-                                        <select name="period" id="period" class="form-control" onchange="checkPrice('proxy4_3');" required="">
-                                                                                            <option value="30">30 ngày</option>
-                                                                                            <option value="60">60 ngày</option>
-                                                                                            <option value="90">90 ngày</option>
-                                                                                            <option value="120">120 ngày</option>
-                                                                                            <option value="150">150 ngày</option>
-                                                                                            <option value="180">180 ngày</option>
-                                                                                            <option value="210">210 ngày</option>
-                                                                                            <option value="240">240 ngày</option>
-                                                                                            <option value="270">270 ngày</option>
-                                                                                            <option value="300">300 ngày</option>
-                                                                                            <option value="330">330 ngày</option>
-                                                                                            <option value="360">360 ngày</option>
-                                                                                    </select>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Mã giảm giá (nếu có)</label>
-                                        <input class="form-control" type="text" id="promotion" name="promotion" placeholder="Mã khuyến mãi nếu có">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="mt-2">
-                                        <div class="alert alert-success text-center">Tổng: <span id="total_price">₫48,000</span></div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn w-100 btn-success mt-2 btn-create" type="button" data-package="proxy4_3" data-group="server02">Mua ngay</button>
-                                </div>
-                            </div>
-                        </form>
-                                    </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-3 col-md-6">
-        <div class="card">
-            <div class="card-body p-4">
-                <div class="d-flex mb-1">
-                    <div class="flex-shrink-0 me-3">
-                        <div class="avatar-sm">
-                            <span class="avatar-title rounded-circle bg-primary">
-                                <i class="fas fa-headset font-size-20"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="flex-grow-1">
-                        <h5 class="font-size-16">Proxy Game</h5>
-                        <p class="text-muted">Protected</p>
-                    </div>
-                </div>
-                <div class="py-4 border-bottom">
-                    <h4>69,000 <sup><small>đ</small></sup> / <span class="font-size-16">1 proxy / tháng</span></h4>
-                    <div>
-                        <label class="form-label">Chọn máy chủ</label>
-                        <select class="form-control" onchange="setForm()">
-                            <option value="proxygame-sv1">Proxy Game Server 1</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mt-2">
-                    <form class="form form-vertical" id="form-proxygame" method="post" action="/api/create">
-                        <input type="hidden" name="package" id="package" value="proxygame">
-                        <input type="hidden" name="group" id="group" value="server03">
-                        <input type="hidden" name="type" id="type" value="http">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Quốc gia</label>
-                                    <div class="input-group">
-                                        <select name="country" id="country" class="form-control" onchange="setFlag(this,'country_proxygame')">
-                                                                                            <option value="vn">Vietnam</option>
-                                                                                    </select>
-                                        <div class="input-group-text">
-                                            <span id="country_proxygame" class="flag vn"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Số lượng</label>
-                                    <input class="form-control" type="number" id="amount" name="amount" placeholder="Số lượng cần mua" value="1" onchange="checkPrice('proxygame');" required="">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Thời gian mua</label>
-                                    <select name="period" id="period" class="form-control" onchange="checkPrice('proxygame');" required="">
-                                        <option value="30">1 tháng</option>
-                                        <option value="60">2 tháng</option>
-                                        <option value="90">3 tháng</option>
-                                        <option value="180">6 tháng</option>
-                                        <option value="360">12 tháng</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Mã giảm giá (nếu có)</label>
-                                    <input class="form-control" type="text" id="promotion" name="promotion" placeholder="Mã khuyến mãi nếu có">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mt-2">
-                                    <div class="alert alert-success text-center">Tổng: <span id="total_price">₫69,000</span></div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn w-100 btn-success mt-2 btn-create" type="button" data-package="proxygame" data-group="server03">Mua ngay</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end form -->
-    <div class="col-xl-3 col-md-6">
-        <div class="card">
-            <div class="card-body p-4">
-                <div class="d-flex mb-1">
-                    <div class="flex-shrink-0 me-3">
-                        <div class="avatar-sm">
-                            <span class="avatar-title rounded-circle bg-primary">
-                                <i class="fas fa-trophy font-size-20"></i>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="flex-grow-1">
-                        <h5 class="font-size-16">Socks SSH Private</h5>
-                        <p class="text-muted">Sử dụng tối đa 1 người.</p>
-                    </div>
-                </div>
-                <div class="py-4 border-bottom">
-                    <h4>135,000 <sup><small>đ</small></sup> / <span class="font-size-16">1 ssh / tháng</span></h4>
-                    <div>
-                        <label class="form-label">Chọn máy chủ</label>
-                        <select class="form-control" onchange="setForm()">
-                            <option value="ipv4-private1">Socks SSH Private Server 1</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mt-2">
-                    <form class="form form-vertical" id="form-ssh" method="post" action="/api/create">
-                        <input type="hidden" name="package" id="package" value="ssh">
-                        <input type="hidden" name="group" id="group" value="server03">
-                        <input type="hidden" name="type" id="type" value="http">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Quốc gia</label>
-                                    <div class="input-group">
-                                        <select name="country" id="country" class="form-control" onchange="setFlag(this,'country_ssh')">
-                                                                                            <option value="vn">Vietnam</option>
-                                                                                    </select>
-                                        <div class="input-group-text">
-                                            <span id="country_ssh" class="flag vn"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Số lượng</label>
-                                    <input class="form-control" type="number" id="amount" name="amount" placeholder="Số lượng cần mua" value="1" onchange="checkPrice('ssh');" required="">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Thời gian mua</label>
-                                    <select name="period" id="period" class="form-control" onchange="checkPrice('ssh');" required="">
-                                        <option value="30">1 tháng</option>
-                                        <option value="60">2 tháng</option>
-                                        <option value="90">3 tháng</option>
-                                        <option value="180">6 tháng</option>
-                                        <option value="360">12 tháng</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Mã giảm giá (nếu có)</label>
-                                    <input class="form-control" type="text" id="promotion" name="promotion" placeholder="Mã khuyến mãi nếu có">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mt-2">
-                                    <div class="alert alert-success text-center">Tổng: <span id="total_price">₫135,000</span></div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn w-100 btn-success mt-2 btn-create" type="button" data-package="ssh" data-group="server03">Mua ngay</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
+   @endforeach
 
 </div>
 <!-- Notice -->
@@ -696,10 +139,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 
 
 <!-- Modal -->
@@ -727,7 +166,110 @@
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/country-select-js/2.1.0/js/countrySelect.js" integrity="sha512-Bpc5Io2V3sZf10nkbHAfih9VJlxbj1IBcFvNXIZy3RBuuxXbnnX8fsksEuZ6LJ/P1GFhinF+HUhw6BIrGteDCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 </div>
+<script>
+function changeserver($id,$key){
+    $.ajax({
+    url : '/countryServer/'+$id,
+    type : 'GET',
+    dataType:'json',
+    success : function(data) {      
+        $("#country-"+$key).empty();        
+        $.each(data, function(key,value) {
+            $("#country-"+$key).append($('<option value='+value.code+'>'+value.name+'</option>'));
+        }); 
+    },
+    error : function(request,error)
+    {
+        alert("Request: "+JSON.stringify(request));
+    }
+});
+$.ajax({
+    url : '/timeServer/'+$id,
+    type : 'GET',
+    dataType:'json',
+    success : function(data) {      
+        $("#period-"+$key).empty();        
+        $.each(data, function(key,value) {
+            $("#period-"+$key).append($('<option value='+value.code+'>'+value.name+'</option>'));
+        }); 
+    },
+    error : function(request,error)
+    {
+        alert("Request: "+JSON.stringify(request));
+    }
+});
+
+}
+function changeCountries($countriesid,$key)
+{
+    $.ajax({
+    url : '/remainIp/'+$countriesid,
+    type : 'GET',
+    dataType:'json',
+    success : function(data) {      
+        $("#remain-"+$key).html("Avaiable:"+ data);        
+    },
+    error : function(request,error)
+    {
+        alert("Request: "+JSON.stringify(request));
+    }
+});
+}
+ function checkPrice($key)
+ {
+   
+    let check_out_price = 0;
+    check_out_price =  numberFormat($("#amount-"+$key).val() * $("#money-"+$key).val());
+    $("#total_price_"+$key).html(check_out_price);
+
+ }
+ function numberFormat(num) {
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'VND',
+        });
+
+        return formatter.format(num);
+    }
+    
+</script>
+<script>
+    $(".btn-create").click(function(e) {
+        let package = $(e.target).data('package');
+        let country = $("#country-"+package).val();
+        let server  = $("#server-"+package).val();
+        let amount  = $("#amount-"+package).val();
+        let period  = $("#period-"+package).val();
+        let money  = $("#money-"+package).val();
+        swal({
+            title: 'Bạn chắc chứ?',
+            text: "Bạn đã kiểm tra kỹ đơn hàng chưa?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Mua ngay',
+            cancelButtonText: 'Huỷ'
+        }).then((result) => {
+            if (result) {
+                $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url : '/createOrder/'+server+"/"+country+"/"+amount+"/"+period+"/"+money,
+                type : 'POST',
+                dataType:'json',
+                success : function(data) {      
+                 alert(data);
+                },
+                error : function(request,error)
+                {
+                    alert("Request: "+JSON.stringify(request));
+                }
+            });
+            }
+        })
+    })
+</script>
 @endsection

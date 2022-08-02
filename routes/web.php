@@ -14,13 +14,15 @@ Route::post('member/changepass', 'MemberController@changepass')->name('changepas
 Route::get('profile', 'MemberController@profile')->name('profile');
 Route::get('transaction', 'MemberController@transaction')->name('transaction');
 Route::get('proxy', 'MemberController@proxy')->name('proxy');
-Route::get('server', 'MemberController@server')->name('server');
+Route::get('server/{serverid}', 'MemberController@server')->name('server');
 Route::get('countryServer/{serverid}', 'HomeController@getCountriesByServer')->name('countryServer');
 Route::get('timeServer/{serverid}', 'HomeController@getTimeByServer')->name('timeServer');
+Route::get('remainIp/{countriesid}', 'HomeController@getRemainIp')->name('remainIp');
 Route::post('createOrder/{server}/{country}/{amount}/{period}/{money}', 'HomeController@createOrder')->name('createOrder');
 Route::redirect('/login', '/login');
 });
 Route::get('blog', 'MemberController@new')->name('blog');
+Route::get('post/{id}/{slug}', 'MemberController@details')->name('details');
 Route::get('contact', 'MemberController@contact')->name('contact');
 
 
@@ -65,7 +67,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     //payment
      Route::resource('payment', 'Admin\PaymentController');
       //order
-    Route::resource('orders', 'Admin\OrderController');
+    Route::resource('orders', 'Admin\OrdersController');
     //member
     Route::resource('member', 'Admin\MemberController');
+    //setting
+    Route::resource('setting', 'Admin\SettingController');
 });

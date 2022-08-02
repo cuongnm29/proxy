@@ -39,15 +39,19 @@
                                     {{"#section-works"}}
                             @endswitch ' class="{{count($category->child)>0? 'has-arrow':''}} waves-effect">
                         <i class="mdi mdi-face"></i>
+                        @if($category->istype == 3)
+                        <span class="badge rounded-pill bg-danger float-end" style="font-size: 11px">{{number_format($members->point - $members->charge, 0, '', ',')}} đ</span>
+                        @endif
                         <span>{{$category->name}}</span>
                     </a>
                     @endif
                     @if(count($category->child)>0)
                     <ul class="sub-menu mm-collapse" aria-expanded="false">
-                        @if($category->istype  =4)
-                        @foreach($servers as $server)
-                        <li><a href='/server'>{{$server->name}}</a>
-                        @endforeach
+                     
+                        @if( $category->istype == 4)
+                            @foreach($servers as $server)
+                                <li><a href='/server/{{$server->id}}/'>{{$server->name}}</a>
+                            @endforeach
                         @else
                          @foreach($category->child as $child)
                             <li><a href='@switch($child->istype)
@@ -70,7 +74,7 @@
                                    {{"/contact"}}
                                    @break;
                                 @default
-                                    {{"#section-works"}}
+                                    {{"/"}}
                             @endswitch '>{{$child->name}}</a></li>
                             
                         @endforeach

@@ -17,6 +17,7 @@ class Member extends Model
                             'username', 
                             'password', 
                             'point',
+                            'charge',
                             'email',
                             'status'
                             ]; 

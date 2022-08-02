@@ -3,23 +3,16 @@
         <div class="d-flex">
             <!-- LOGO -->
             <div class="navbar-brand-box text-center">
-                <a href="https://proxygame.vn" class="logo logo-dark">
+                <a href="/" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="assets/images/logo-sm.png" alt="logo-sm-dark" height="22">
+                        <img src="{{$setting->logo}}" alt="logo-sm-light" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="https://proxygame.vn/resources/image/1641370129_aa4b1e09e2eb2dfc29b1.png" alt="logo-dark" height="40">
+                        <img src="{{$setting->logo}}" alt="logo-light" height="40">
                     </span>
                 </a>
 
-                <a href="https://proxygame.vn" class="logo logo-light">
-                    <span class="logo-sm">
-                        <img src="assets/images/logo-sm.png" alt="logo-sm-light" height="22">
-                    </span>
-                    <span class="logo-lg">
-                        <img src="https://proxygame.vn/resources/image/1641370129_aa4b1e09e2eb2dfc29b1.png" alt="logo-light" height="40">
-                    </span>
-                </a>
+               
             </div>
 
             <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect" id="vertical-menu-btn">

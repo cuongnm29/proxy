@@ -187,12 +187,9 @@
   };
   tinymce.init(editor_config);
 </script>
-<script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+<script src="/vendor/laravel-filemanager/js/lfm.js"></script>
 <script>
-var route_prefix = "/laravel-filemanager";
-lfm('lfm', 'image', {
-    prefix: route_prefix
-});
+    $('#lfm').filemanager('image');
 </script>
 
 @stop

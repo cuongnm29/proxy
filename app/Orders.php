@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
 class Orders extends Model
 {
     protected $table = 'orders';
@@ -23,4 +22,17 @@ class Orders extends Model
                             'price',
                             'exprireddate'
                             ]; 
+                            public  function members() {
+                                return $this->belongsToMany(Member::class,
+                                                            Orders::class,
+                                                            'id',
+                                                            'memberid');
+                            }
+                            public  function servers() {
+                                return $this->belongsToMany(Server::class,
+                                                            Orders::class,
+                                                            'id',
+                                                            'serverid');
+                            }
+    
 }

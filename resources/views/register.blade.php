@@ -1,11 +1,10 @@
 <html lang="en"><head>
 
     <meta charset="utf-8">
-    <title>Đăng ký - ProxyGame.VN - Nhà cung cấp PROXY, VPS IP Private các quốc gia trên thế giới</title>
+    <title>{{$setting->titlepage}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Cung cấp dịch vụ Proxy Ipv4 Ipv6, VPS, Các dịch vụ Ebay, Amazon, Droping, Proxy Việt Nam, Proxy VN, Proxy private US, Proxy Private Mỹ,  Proxy Ebay" name="description">
-    <meta content="Cung cấp dịch vụ Proxy, VPS, Các dịch vụ Ebay, Amazon, Droping, Proxy Việt Nam, Proxy VN, Proxy private US, Proxy Private Mỹ,  Proxy Ebay" name="keywords">
-    <meta content="Admin ProxyViet" name="author">
+    <meta content="{{$setting->meta}}" name="description">
+    <meta content="{{$setting->keyword}}" name="keywords">
     <!-- App favicon -->
     <link rel="shortcut icon" href="https://proxygame.vn/resources/image/1641370152_1072d4ff10476354f97c.png">
 
@@ -26,10 +25,10 @@
                     <div class="card">
                         <div class="card-body p-4">
                             <div class="text-center">
-                                <a href="https://proxygame.vn" class="">
-                                    <img src="https://proxygame.vn/resources/image/1641370129_aa4b1e09e2eb2dfc29b1.png" alt="" height="40" class="auth-logo logo-dark mx-auto">
-                                    <img src="https://proxygame.vn/resources/image/1641370129_aa4b1e09e2eb2dfc29b1.png" alt="" height="40" class="auth-logo logo-light mx-auto">
-                                </a>
+                            <a href="/" class="">
+                                        <img src="{{$setting->logo}}" alt="" height="40" class="auth-logo logo-dark mx-auto">
+                                       
+                                    </a>
                             </div>
 
                             <h4 class="font-size-18 text-muted text-center mt-2">Tạo tài khoản miễn phí</h4>

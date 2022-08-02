@@ -28,7 +28,7 @@ class Server extends Model
             return $this->belongsToMany(Country::class,
                                         CountriesHasServer::class,
                                         'server_id',
-                                        'countries_id')->select('name','code')->get();
+                                        'countries_id')->select('name','code','id')->get();
         }
         public  function time() {
             return $this->belongsToMany(Time::class,
@@ -36,4 +36,5 @@ class Server extends Model
                                         'server_id',
                                         'time_id')->select('name','id')->get();
         }
+        
 }

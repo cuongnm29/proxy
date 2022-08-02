@@ -133,7 +133,7 @@
                         <i class="fa-fw fas fa-users nav-icon">
 
                         </i>
-                        {{ trans('cruds.orders.title') }}
+                        {{ trans('cruds.order.title') }}
                     </a>
                 </li>
             @endcan
@@ -166,6 +166,16 @@
                     Change password
                 </a>
             </li>
+            @can('setting_manage')
+                <li class="nav-item nav-dropdown">
+                    <a href="{{ route('admin.setting.index') }}" class="nav-link {{ request()->is('admin/setting') || request()->is('admin/setting/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.setting.title') }}
+                    </a>
+                </li>
+            @endcan
             <li class="nav-item">
                 <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">

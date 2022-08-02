@@ -19,6 +19,7 @@
     "sass-loader": "^7.1.0"
   },
   "dependencies": {
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "tinymce": "^6.1.2"
   }
 }

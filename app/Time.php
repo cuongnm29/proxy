@@ -16,6 +16,7 @@ class Time extends Model
     protected $fillable = [
                            'name',
                            'isorder',
+                           'value',
                            'status'
                             ]; 
     public  function servers() {

@@ -7,6 +7,11 @@ use App\Member;
 use App\Category;
 use App\Payment;
 use App\Server;
+use App\Orders;
+use App\Time;
+use App\Services;
+use App\Setting;
+use App\Post;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 class MemberController extends Controller
@@ -17,47 +22,60 @@ class MemberController extends Controller
     }
     public function register()
     {
-        return view('register');
+        $setting = Setting::first();
+        return view('register',compact('setting'));
     }
     public function login()
     {
-        return view('login');
+        $setting = Setting::first();
+        return view('login',compact('setting'));
     }
     public function transaction()
     {
-      
-        $servers = Server::orderby("isorder")->get();
+        $setting = Setting::first();
         $members=Session::get('member');
+        $servers = Server::orderby("isorder")->get();
+        $orders = Orders::where('memberid',$members->id)->get();
         $categories = Category::tree(); 
-        return view('transaction',compact('categories','members','servers'));
+        return view('transaction',compact('categories','members','servers','orders','setting'));
     }
     public function proxy()
     {
+        $setting = Setting::first();
+        $services = Services::get();
         $servers = Server::orderby("isorder")->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('proxy',compact('categories','members','servers'));
+        return view('proxy',compact('categories','members','servers','services','setting'));
     }
     public function new()
     {
+        $setting = Setting::first();
         $servers = Server::orderby("isorder")->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('new',compact('categories','members','servers'));
+        $posts = Post::get();
+        return view('new',compact('categories','members','servers','setting','posts'));
     }
     public function contact()
     {
+        $setting = Setting::first();
         $servers = Server::orderby("isorder")->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('contact',compact('categories','members','servers'));
+        return view('contact',compact('categories','members','servers','setting'));
     }
-    public function server()
+    public function server($serverid)
     {
+        $setting = Setting::first();
         $servers = Server::orderby("isorder")->get();
+        $package = Server::where('id',$serverid)->orderby("isorder")->first();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('server',compact('categories','members','servers'));
+        $orders  = Orders::where('serverid',$serverid)->get();
+      
+       
+        return view('server',compact('categories','members','servers','orders','package','setting'));
     }
     public function logout()
     {
@@ -66,21 +84,25 @@ class MemberController extends Controller
     }
     public function recharge()
     {
+        $setting = Setting::first();
         $members=Session::get('member');
         $servers = Server::orderby("isorder")->get();
         $transactions = Payment::where('memberid',$members->id)->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('recharge',compact('categories','members','transactions','servers'));
+        return view('recharge',compact('categories','members','transactions','servers','setting'));
     }
     public function profile()
     {
+        $setting = Setting::first();
+        $servers = Server::orderby("isorder")->get();
         $members=Session::get('member');
         $categories = Category::tree(); 
-        return view('profile',compact('categories','members'));
+        return view('profile',compact('categories','members','servers','setting'));
     }
     public function changepass(Request $request,Member $member)
     {  
+        $setting = Setting::first();
         $members=Session::get('member');
         $request->validate([
             'password' => 'required',
@@ -129,10 +151,19 @@ class MemberController extends Controller
     //create recharge
     public function createrecharge(Request $request)
     {
+        $setting = Setting::first();
         $request['status']=0;
-        $request['code']= "#PXG".random_int(100000, 999999);
+        $request['code']= "#".$setting->synax.random_int(100000, 999999);
         Payment::create($request->all());
         return redirect()->back()->with('success', 'Create recharge successfull!');
     }
-    
+    public function details($id)
+    {
+        $setting = Setting::first();
+        $servers = Server::orderby("isorder")->get();
+        $members=Session::get('member');
+        $categories = Category::tree(); 
+        $post = Post::where('id',$id)->first();
+        return view('details',compact('categories','members','servers','setting','post'));
+    }
 }

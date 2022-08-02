@@ -2,11 +2,10 @@
 
     <head>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>ProxyGame.VN - Nhà cung cấp PROXY, VPS IP Private các quốc gia trên thế giới</title>
+    <title>{{$setting->titlepage}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Cung cấp dịch vụ Proxy Ipv4 Ipv6, VPS, Các dịch vụ Ebay, Amazon, Droping, Proxy Việt Nam, Proxy VN, Proxy private US, Proxy Private Mỹ,  Proxy Ebay" name="description">
-    <meta content="Cung cấp dịch vụ Proxy, VPS, Các dịch vụ Ebay, Amazon, Droping, Proxy Việt Nam, Proxy VN, Proxy private US, Proxy Private Mỹ,  Proxy Ebay" name="keywords">
-    <meta content="Admin ProxyViet" name="author">
+    <meta content="{{$setting->meta}}" name="description">
+    <meta content="{{$setting->keyword}}" name="keywords">
     <!-- App favicon -->
     <link rel="shortcut icon" href="https://proxygame.vn/resources/image/1641370152_1072d4ff10476354f97c.png">
     <!-- DataTables -->
